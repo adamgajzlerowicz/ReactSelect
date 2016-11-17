@@ -1,11 +1,11 @@
 {
   "name": "select-react-redux",
-  "version": "1.1.6-pre",
+  "version": "1.1.5-pre",
   "description": "React Select",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "babel": "rimraf lib && babel src/ -d lib/",
-    "publish": "npm run babel && git add -A && git commit -m deploy && git push && npm-bump patch"
+    "publish": "npm run babel && git add -A && git commit -m \"deploy\" && git push && npm-bump patch"
   },
   "main": "lib/Select.jsx",
   "repository": {
