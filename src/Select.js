@@ -10,7 +10,7 @@ class Unstyled extends React.Component {
 
     componentWillMount() {
         this.setState({
-            open: true,
+            open: false,
             items: this.props.items,
             filter: '',
             selectedItem: '',
@@ -169,4 +169,4 @@ class Unstyled extends React.Component {
     }
 }
 
-exports.Select= Radium(Unstyled);
+export default Radium(Unstyled);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Select} from './Select';
+import Select from './src/Select';
 
 const items = {
     'foo': 'I am option 1',
