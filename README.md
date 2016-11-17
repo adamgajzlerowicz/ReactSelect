@@ -1,7 +1,10 @@
 ## ReactSelect
 
-A searchable select box, similar to select2, but compatible with react and redux.
- 
+A searchable select box, similar to select2.
+
+What is different about this plugin? It doesn't build an underlying select item, but acts like it. 
+Behaviour and select action is to be passed as a prop, allowing full compatibility with redux.
+
 usage: 
 
 ```
