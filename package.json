@@ -1,6 +1,6 @@
 {
   "name": "select-react-redux",
-  "version": "1.1.4-pre",
+  "version": "1.1.4",
   "description": "React Select",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
