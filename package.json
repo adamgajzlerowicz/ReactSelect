@@ -1,13 +1,12 @@
 {
   "name": "select-react-redux",
-  "version": "1.1.5-pre",
+  "version": "1.2.8",
   "description": "React Select",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel": "rimraf lib && babel src/ -d lib/",
-    "publish": "npm run babel && git add -A && git commit -m deploy && git push && npm-bump patch"
+    "babel": "rimraf lib && babel src/ -d lib/"
   },
-  "main": "lib/Select.jsx",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/adamgajzlerowicz/ReactSelect.git"
@@ -22,7 +21,6 @@
   "author": "Adam Gajzlerowicz",
   "license": "ISC",
   "dependencies": {
-    "babel": "^6.5.2",
     "radium": "^0.18.1",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
