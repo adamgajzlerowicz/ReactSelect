@@ -1,12 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Select} from '../src/Select';
+import {Select} from '../lib/index';
 
 const items = {
-    'foo': 'I am option 1',
-    'foo2': 'I am option 2',
-    'blah': 'dupa dupa dupa',
-    'fekkk': 'Harry potter'
+    'item1': 'Mercedes Benz C40',
+    'item2': 'Mazda X11',
 };
 
 const onChange = (val) => {
@@ -17,5 +15,5 @@ render((
     <div>
         <Select items={items} onChange={onChange}/>
     </div>
-), document.getElementById('app_small'));
+), document.getElementById('app'));
 
