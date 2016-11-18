@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "babel": "rimraf lib && babel src/ -d lib/",
-    "build:example": "npm run babel && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish",
+    "build:example": "rimraf lib && babel example/src/ -d example/lib/",
     "pnp": "npm run babel && npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "lib/index.js",
