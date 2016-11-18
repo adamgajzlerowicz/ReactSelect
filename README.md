@@ -19,8 +19,6 @@ import {Select} from 'select-react-redux';
 const items = {
     'item1': 'Mercedes Benz C40',
     'item2': 'Mazda X11',
-    'item3': 'Volvo V50',
-    'item4': 'Audi 80'
 };
 
 const onChange = (val) => {
