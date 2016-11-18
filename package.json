@@ -21,7 +21,6 @@
   "author": "Adam Gajzlerowicz",
   "license": "ISC",
   "dependencies": {
-    "babel": "^6.5.2",
     "radium": "^0.18.1",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",

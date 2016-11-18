@@ -43,15 +43,15 @@ class Unstyled extends React.Component {
         const visibleItems = [];
         Object.keys(this.props.items).forEach(key=> {
 
-            if (!this.state.filter || items[key].indexOf(this.state.filter) !== -1) {
+            if (!this.state.filter || this.props.items[key].indexOf(this.state.filter) !== -1) {
 
                 visibleItems.push(
                     <div
                         onClick={() => {
-                            onChange(key);
+                            this.props.onChange(key);
                             this.setState({
                                 selectedItem: key,
-                                selectedItemLabel: items[key],
+                                selectedItemLabel: this.props.items[key],
                                 open: false
                             })
                         }}
@@ -66,7 +66,7 @@ class Unstyled extends React.Component {
                             fontSize:15
 
                         }}
-                    >{items[key]}
+                    >{this.props.items[key]}
                     </div>)
             }
         });
