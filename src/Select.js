@@ -169,4 +169,4 @@ class Unstyled extends React.Component {
     }
 }
 
-export default Radium(Unstyled);
+export const Select = Radium(Unstyled);

@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "babel": "rimraf lib && babel src/ -d lib/"
   },
-  "main": "lib/Select.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/adamgajzlerowicz/ReactSelect.git"
