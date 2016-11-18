@@ -1,6 +1,6 @@
 {
   "name": "select-react-redux",
-  "version": "1.2.20",
+  "version": "1.2.21",
   "description": "A searchable select box, similar to select2.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
