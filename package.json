@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "babel": "rimraf lib && babel src/ -d lib/",
-    "build:example": "rimraf lib && babel example/src/ -d example/lib/",
+    "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.config.js",
     "pnp": "npm run babel && npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "lib/index.js",
@@ -23,17 +23,26 @@
   "author": "Adam Gajzlerowicz",
   "license": "ISC",
   "dependencies": {
-    "radium": "^0.18.1",
-    "react": "^15.4.0",
-    "react-dom": "^15.4.0",
-    "rifraf": "^2.0.3",
+    "autoprefixer": "^6.5.3",
     "babel-cli": "^6.14.0",
     "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.8",
     "babel-plugin-add-module-exports": "^0.2.0",
     "babel-plugin-transform-decorators-legacy": "^1.2.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.7.4",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
-    "babel-preset-stage-1": "^6.3.13"
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-preset-stage-1": "^6.3.13",
+    "clean-webpack-plugin": "^0.1.14",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "html-webpack-plugin": "^2.24.1",
+    "radium": "^0.18.1",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "rifraf": "^2.0.3",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   }
 }
