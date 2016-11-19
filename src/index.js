@@ -43,7 +43,11 @@ class Unstyled extends React.Component {
         const visibleItems = [];
         Object.keys(this.props.items).forEach(key=> {
 
-            if (!this.state.filter || this.props.items[key].indexOf(this.state.filter) !== -1) {
+            if (
+                !this.state.filter
+                ||
+                this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase())
+                !== -1) {
 
                 visibleItems.push(
                     <div
@@ -62,8 +66,8 @@ class Unstyled extends React.Component {
                             ':hover': {
                                 backgroundColor: 'rgb(88, 151, 251)'
                             },
-                            fontFamily:'"Helvetica Neue", Helvetica, Arial, sans-serif',
-                            fontSize:15
+                            fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                            fontSize: 15
 
                         }}
                     >{this.props.items[key]}
@@ -77,7 +81,7 @@ class Unstyled extends React.Component {
                     key={null}
                     style={{
                         padding: "6px 6px 6px 14px",
-                        fontFamily:'"Helvetica Neue", Helvetica, Arial, sans-serif'
+                        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
 
                     }}
                 >No results found</div>
@@ -94,7 +98,7 @@ class Unstyled extends React.Component {
             this.setState({
                 open: false,
                 filter: ''
-            },()=> {
+            }, ()=> {
                 this.getVisibleItems();
             })
         }
@@ -103,7 +107,7 @@ class Unstyled extends React.Component {
     render() {
         return (
 
-            <div style={{position:'relative'}}>
+            <div style={{position: 'relative'}}>
 
                 <div
                     onClick={()=> {
@@ -117,9 +121,10 @@ class Unstyled extends React.Component {
                         borderBottom: this.state.open ? 'none' : '1px solid rgb(170, 170, 170)',
                         width: '100%',
                         cursor: 'pointer',
-                        fontFamily:'"Helvetica Neue", Helvetica, Arial, sans-serif'
+                        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
                     }}>
-                    <div style={{padding: '5px 7px'}}>{this.state.selectedItemLabel ? this.state.selectedItemLabel : 'Please select...'}</div>
+                    <div
+                        style={{padding: '5px 7px'}}>{this.state.selectedItemLabel ? this.state.selectedItemLabel : 'Please select...'}</div>
                 </div>
 
                 <div style={{
@@ -147,7 +152,7 @@ class Unstyled extends React.Component {
                             onChange={(e)=> {
                                 this.setState({
                                     filter: e.target.value
-                                },()=>{
+                                }, ()=> {
                                     this.getVisibleItems();
                                 });
 
