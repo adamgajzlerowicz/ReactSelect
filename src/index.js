@@ -121,7 +121,8 @@ class Unstyled extends React.Component {
                         borderBottom: this.state.open ? 'none' : '1px solid rgb(170, 170, 170)',
                         width: '100%',
                         cursor: 'pointer',
-                        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
+                        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                        backgroundColor: "white"
                     }}>
                     <div
                         style={{padding: '5px 7px'}}>{this.state.selectedItemLabel ? this.state.selectedItemLabel : 'Please select...'}</div>
