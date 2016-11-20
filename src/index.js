@@ -28,7 +28,7 @@ export class Select extends React.Component {
         document.removeEventListener('click', this.handleOutsideClick, false);
     };
 
-    toggle = (value) => {
+    toggle(value) {
         this.setState({
             open: value
         });
@@ -48,7 +48,7 @@ export class Select extends React.Component {
         }
     }
 
-    getVisibleItems = () => {
+    getVisibleItems() {
         const visibleItems = [];
         Object.keys(this.props.items).forEach(key=> {
 
@@ -89,7 +89,7 @@ export class Select extends React.Component {
         })
     };
 
-    handleOutsideClick = (e) => {
+    handleOutsideClick(e) {
         if (!ReactDom.findDOMNode(this).contains(e.target)) {
             this.setState({
                 open: false,
