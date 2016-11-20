@@ -20,11 +20,11 @@ export class Select extends React.Component {
         document.addEventListener('click', this.handleOutsideClick, false);
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
         this.getVisibleItems()
     };
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         document.removeEventListener('click', this.handleOutsideClick, false);
     };
 
@@ -42,7 +42,7 @@ export class Select extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.items !== this.state.items) {
-            this.setState({ items: nextProps.items }, () => {
+            this.setState({items: nextProps.items}, () => {
                 this.getVisibleItems();
             });
         }
