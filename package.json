@@ -1,13 +1,13 @@
 {
   "name": "select-react-redux",
-  "version": "1.2.29",
+  "version": "1.2.28",
   "description": "A searchable select box, similar to select2.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:prod": "rimraf lib && NODE_ENV=production webpack --config webpack.config.js",
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
-    "pnp": "npm run build:example && npm run build:prod && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
+    "pnp": "npm run build:prod && npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "lib/index.js",
   "repository": {
