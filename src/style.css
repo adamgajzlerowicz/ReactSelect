@@ -5,7 +5,7 @@
     font-size: 15px;
 }
 
-.select-react-redux-container .item:hover{
+.select-react-redux-container .item:hover, .select-react-redux-container .item-selected{
     background-color: rgb(88, 151, 251);
 }
 

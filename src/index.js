@@ -57,8 +57,8 @@ export class Select extends React.Component {
                 !this.state.filter
                 ||
                 this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase())
-                !== -1) {
-
+                !== -1
+            ) {
                 visibleItems.push(
                     <div
                         onClick={() => {
@@ -67,10 +67,12 @@ export class Select extends React.Component {
                                 selectedItem: key,
                                 selectedItemLabel: this.props.items[key],
                                 open: false
+                            }, ()=> {
+                                this.getVisibleItems();
                             })
                         }}
                         key={key}
-                        className="item"
+                        className={key == this.state.selectedItem ? "item item-selected" : "item"}
                     >{this.props.items[key]}
                     </div>)
             }
