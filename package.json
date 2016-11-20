@@ -4,9 +4,10 @@
   "description": "A searchable select box, similar to select2.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel": "rimraf lib && babel src/ -d lib/",
-    "build:example": "npm run babel && rimraf example/lib && NODE_ENV=production webpack --config webpack.config.js",
-    "pnp": "npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
+    "build:prod": "rimraf lib && NODE_ENV=production webpack --config webpack.config.js",
+    "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
+    "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
+    "pnp": "npm run build:example && npm run build:prod && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "lib/index.js",
   "repository": {
@@ -42,7 +43,13 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "rifraf": "^2.0.3",
+    "style-it": "^1.2.11",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
+  },
+  "devDependencies": {
+    "css-loader": "^0.26.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1"
   }
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 var ReactDom = require('react-dom');
-var Radium = require('radium');
+require('./style.css');
 
-class Unstyled extends React.Component {
+export class Select extends React.Component {
     constructor(props) {
         super(props);
         this.getVisibleItems = this.getVisibleItems.bind(this);
@@ -14,7 +14,8 @@ class Unstyled extends React.Component {
             items: this.props.items,
             filter: '',
             selectedItem: '',
-            selectedItemLabel: ''
+            selectedItemLabel: '',
+            visibleItems: []
         });
         document.addEventListener('click', this.handleOutsideClick, false);
     }
@@ -60,16 +61,7 @@ class Unstyled extends React.Component {
                             })
                         }}
                         key={key}
-                        style={{
-                            padding: "6px 6px 6px 14px",
-                            cursor: 'pointer',
-                            ':hover': {
-                                backgroundColor: 'rgb(88, 151, 251)'
-                            },
-                            fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                            fontSize: 15
-
-                        }}
+                        className="item"
                     >{this.props.items[key]}
                     </div>)
             }
@@ -79,11 +71,7 @@ class Unstyled extends React.Component {
             visibleItems.push(
                 <div
                     key={null}
-                    style={{
-                        padding: "6px 6px 6px 14px",
-                        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
-
-                    }}
+                    className="item item-no-results"
                 >No results found</div>
             )
         }
@@ -107,25 +95,19 @@ class Unstyled extends React.Component {
     render() {
         return (
 
-            <div style={{position: 'relative'}}>
+            <div className="select-react-redux-container">
 
                 <div
                     onClick={()=> {
                         this.toggle(!this.state.open)
                     }}
-                    style={{
-                        borderRadius: this.state.open ? '6px 6px 0 0 ' : '6px',
-                        borderTop: '1px rgb(170, 170, 170) solid',
-                        borderLeft: '1px rgb(170, 170, 170) solid',
-                        borderRight: '1px rgb(170, 170, 170) solid',
-                        borderBottom: this.state.open ? 'none' : '1px solid rgb(170, 170, 170)',
-                        width: '100%',
-                        cursor: 'pointer',
-                        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                        backgroundColor: "white"
-                    }}>
+                    className={this.state.open ? 'selected selected-open' : 'selected'}
+                >
                     <div
-                        style={{padding: '5px 7px'}}>{this.state.selectedItemLabel ? this.state.selectedItemLabel : 'Please select...'}</div>
+                        className={Object.keys(this.state.items).length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
+                        {this.state.selectedItemLabel
+                            ? this.state.selectedItemLabel
+                            : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}</div>
                 </div>
 
                 <div style={{
@@ -175,4 +157,4 @@ class Unstyled extends React.Component {
     }
 }
 
-export const Select = Radium(Unstyled);
+
