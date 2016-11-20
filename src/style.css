@@ -33,7 +33,6 @@
 
 .select-react-redux-container .selected-open{
     border-radius: 6px 6px 0 0;
-    border-bottom: none;
 }
 
 .top-bar{

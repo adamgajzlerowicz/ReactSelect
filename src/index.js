@@ -124,7 +124,9 @@ export class Select extends React.Component {
                 <div style={{
                     display: this.state.open ? 'block' : 'none',
                     borderRadius: '0 0 6px 6px',
-                    border: '1px rgb(170, 170, 170) solid',
+                    borderBottom: '1px rgb(170, 170, 170) solid',
+                    borderLeft: '1px rgb(170, 170, 170) solid',
+                    borderRight: '1px rgb(170, 170, 170) solid',
                     fontSize: 15,
                     position: 'absolute',
                     backgroundColor: 'white',
