@@ -6,6 +6,7 @@ export class Select extends React.Component {
     constructor(props) {
         super(props);
         this.getVisibleItems = this.getVisibleItems.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
     }
 
     componentWillMount() {
