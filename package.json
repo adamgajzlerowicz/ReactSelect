@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
-    "babel": "rimraf lib && babel src/ -d lib/",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
+    "build:prod": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
     "pnp": "npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "lib/index.js",
