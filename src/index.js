@@ -2,7 +2,7 @@ import React from 'react';
 var ReactDom = require('react-dom');
 require('./style.css');
 
-class Select extends React.Component {
+class Component extends React.Component {
     constructor(props) {
         super(props);
         this.getVisibleItems = this.getVisibleItems.bind(this);
@@ -156,5 +156,5 @@ class Select extends React.Component {
         );
     }
 }
-export const Select = Select;
+export const Select = Component;
 
