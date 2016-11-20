@@ -2,7 +2,7 @@ import React from 'react';
 var ReactDom = require('react-dom');
 require('./style.css');
 
-class Component extends React.Component {
+export class Select extends React.Component {
     constructor(props) {
         super(props);
         this.getVisibleItems = this.getVisibleItems.bind(this);
@@ -39,6 +39,14 @@ class Component extends React.Component {
         } else {
         }
     };
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.items !== this.state.items) {
+            this.setState({ items: nextProps.items }, () => {
+                this.getVisibleItems();
+            });
+        }
+    }
 
     getVisibleItems = () => {
         const visibleItems = [];
@@ -118,7 +126,9 @@ class Component extends React.Component {
                     position: 'absolute',
                     backgroundColor: 'white',
                     width: '100%',
-                    zIndex: '9999'
+                    zIndex: '9999',
+                    maxHeight: 300,
+                    overflow: 'auto'
                 }}>
 
                     <div style={{
@@ -156,5 +166,3 @@ class Component extends React.Component {
         );
     }
 }
-export const Select = Component;
-
