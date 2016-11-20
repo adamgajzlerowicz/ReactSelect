@@ -5,10 +5,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
+    "babel": "rimraf lib && babel src/ -d lib/",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
     "pnp": "npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/adamgajzlerowicz/ReactSelect.git"
