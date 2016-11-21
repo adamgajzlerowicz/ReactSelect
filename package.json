@@ -9,7 +9,7 @@
     "build:prod": "rimraf example/lib && NODE_ENV=production webpack --config webpack.config.js",
     "pnp": "npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/adamgajzlerowicz/ReactSelect.git"
