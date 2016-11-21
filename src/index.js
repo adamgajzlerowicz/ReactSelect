@@ -1,6 +1,6 @@
 import React from 'react';
 var ReactDom = require('react-dom');
-require('./style.css');
+require('../style.css');
 
 export class Select extends React.Component {
     constructor(props) {
