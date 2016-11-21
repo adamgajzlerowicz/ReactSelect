@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Select} from '../../src/index';
+import {Select} from '../../lib/index';
 
 const items = {
     'item1': 'Mercedes Benz C40',

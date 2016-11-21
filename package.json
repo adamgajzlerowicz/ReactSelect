@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
-    "build:prod": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
+    "build:prod": "rimraf example/lib && NODE_ENV=production webpack --config webpack.config.js",
     "pnp": "npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "src/index.js",
