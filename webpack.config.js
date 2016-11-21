@@ -1,53 +1,19 @@
-const webpack = require('webpack');
-const path = require('path');
-const autoprefixer = require('autoprefixer');
-
-const APP = path.join(__dirname, 'src');
-const BUILD = path.join(__dirname, 'lib');
-
+var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
-    entry: {
-        index: APP,
-    },
-    output: {
-        path: BUILD,
-        filename: '[name].js',
-        publicPath: '/'
-    },
-    resolve: {
-        extensions: ['', '.js', '.jsx', '.css', '.scss'],
-        modulesDirectories: [
-            'node_modules',
-            path.resolve(__dirname, './node_modules')
-        ]
-    },
+    entry: path.join(__dirname, 'src/index.js'),
+    output: { path: __dirname, filename: 'lib/index.js' },
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,         // Match both .js and .jsx files
-                exclude: /node_modules/,
+                test: /.jsx?$/,
                 loader: 'babel-loader',
+                exclude: /node_modules/,
                 query: {
-                    presets: ['react', 'es2015', 'stage-0']
+                    presets: ['es2015', 'react']
                 }
-            },
-
-            {test: /\.css$/, loader: "style-loader!css-loader"}
+            }
         ]
     },
-
-    devtool: 'cheap-module-source-map',
-    plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        })
-    ]
 };

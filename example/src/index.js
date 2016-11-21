@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Select} from '../../lib/index';
 
+console.log(Select);
 const items = {
     'item1': 'Mercedes Benz C40',
     'item2': 'Mazda X11',

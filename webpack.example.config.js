@@ -3,8 +3,8 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const APP = path.join(__dirname, 'src');
-const BUILD = path.join(__dirname, 'lib');
+const APP = path.join(__dirname, 'example/src');
+const BUILD = path.join(__dirname, 'example/lib');
 
 
 module.exports = {
@@ -28,9 +28,11 @@ module.exports = {
             {
                 test: /\.jsx?$/,         // Match both .js and .jsx files
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader: 'babel',
                 query: {
-                    presets: ['react', 'es2015', 'stage-0']
+                    presets: ['react', 'es2015', 'stage-0'],
+                    compact: false
+
                 }
             },
             {test: /\.css$/, loader: "style-loader!css-loader"}
@@ -40,15 +42,15 @@ module.exports = {
 
     devtool: 'cheap-module-source-map',
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        })
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        //     }
+        // }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // })
     ]
 };
