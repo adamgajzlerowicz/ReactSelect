@@ -3,8 +3,8 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const APP = path.join(__dirname, 'example/src');
-const BUILD = path.join(__dirname, 'example/lib');
+const APP = path.join(__dirname, 'src');
+const BUILD = path.join(__dirname, 'lib');
 
 
 module.exports = {
