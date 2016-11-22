@@ -29,6 +29,12 @@
     cursor: pointer;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: white;
+    display: block;
+}
+
+.select-react-redux-container a.selected{
+   color:black;
+    text-decoration: none;
 }
 
 .select-react-redux-container .selected-open{

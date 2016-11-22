@@ -11,17 +11,29 @@ export class Select extends React.Component {
     componentWillMount() {
         this.setState({
             open: false,
-            items: this.props.items,
+            items: this.props.items ? this.props.items : {},
             filter: '',
             selectedItem: '',
             selectedItemLabel: '',
-            visibleItems: []
+            visibleItems: [],
+            tabIndex: this.props.tabIndex ? this.props.tabIndex : null
         });
         document.addEventListener('click', this.handleOutsideClick, false);
     }
 
     componentDidMount() {
-        this.getVisibleItems()
+        this.getVisibleItems();
+        document.addEventListener('keydown', (e)=>{
+            if(e.key === "Escape"){
+                this.setState({
+                    open: false
+                });
+                if (ReactDom.findDOMNode(this).contains(e.target)) {
+                    this.link.focus();
+                }
+
+            }
+        });
     };
 
     componentWillUnmount() {
@@ -36,7 +48,6 @@ export class Select extends React.Component {
             this.setState({
                 filter: ''
             });
-        } else {
         }
     };
 
@@ -51,7 +62,6 @@ export class Select extends React.Component {
     getVisibleItems() {
         const visibleItems = [];
         Object.keys(this.props.items).forEach(key=> {
-
             if (
                 !this.state.filter
                 ||
@@ -76,7 +86,6 @@ export class Select extends React.Component {
                     </div>)
             }
         });
-
         if (visibleItems.length === 0) {
             visibleItems.push(
                 <div
@@ -107,18 +116,25 @@ export class Select extends React.Component {
 
             <div className="select-react-redux-container">
 
-                <div
-                    onClick={()=> {
-                        this.toggle(!this.state.open)
-                    }}
-                    className={this.state.open ? 'selected selected-open' : 'selected'}
+                <a href="#"
+                   tabIndex={this.state.tabIndex}
+                   onClick={()=> {
+                       this.toggle(!this.state.open)
+                   }}
+                   onKeyPress={(e)=> {
+                       if (e.key === 'Enter' || e.key === ' ') {
+                           this.toggle(!this.state.open)
+                       }
+                   }}
+                   ref={(e) => { this.link = e; }}
+                   className={this.state.open ? 'selected selected-open' : 'selected'}
                 >
                     <div
                         className={Object.keys(this.state.items).length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
                         {this.state.selectedItemLabel
                             ? this.state.selectedItemLabel
                             : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}</div>
-                </div>
+                </a>
 
                 <div style={{
                     display: this.state.open ? 'block' : 'none',
@@ -146,13 +162,17 @@ export class Select extends React.Component {
                             autoComplete="off"
                             ref={search => search && search.focus()}
                             value={this.state.filter}
+                            onKeyPress={(e)=> {
+                                if (e.key === 'Esc') {
+                                    this.toggle(!this.state.open)
+                                }
+                            }}
                             onChange={(e)=> {
                                 this.setState({
                                     filter: e.target.value
                                 }, ()=> {
                                     this.getVisibleItems();
                                 });
-
                             }}
                             style={{
                                 fontSize: 15,
