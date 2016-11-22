@@ -47,7 +47,7 @@ module.exports = {
         port: PORT,
         outputPath: BUILD,
     },
-    devtool: 'cheap-module-source-map',
+    devtool: 'inline-source-map',
     plugins: [
         new HtmlWebpackPlugin({
             template: './dev/template.html',
