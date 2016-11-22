@@ -26,7 +26,8 @@ export class Select extends React.Component {
         document.addEventListener('keydown', (e)=> {
             if (e.key === "Escape") {
                 this.setState({
-                    open: false
+                    open: false,
+                    filter: ''
                 });
                 if (ReactDom.findDOMNode(this).contains(e.target)) {
                     this.link.focus();
@@ -122,9 +123,9 @@ export class Select extends React.Component {
                        this.toggle(!this.state.open)
                    }}
                    onKeyPress={(e)=> {
-                       if (e.key === 'Enter' || e.key === ' ') {
-                           this.toggle(!this.state.open)
-                       }
+                      this.setState({
+                          open: true
+                      })
                    }}
                    ref={(e) => {
                        this.link = e;
