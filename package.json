@@ -8,7 +8,7 @@
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
     "build:prod": "rimraf lib && babel src/ -d lib/",
-    "pnp": "npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
+    "pnp": "npm run build:prod && npm run build:example && git add -A && git commit -m \"push\" && git push && npm version patch && npm publish"
   },
   "main": "lib/index.js",
   "repository": {

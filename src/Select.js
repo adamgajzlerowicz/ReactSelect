@@ -23,8 +23,8 @@ export class Select extends React.Component {
 
     componentDidMount() {
         this.getVisibleItems();
-        document.addEventListener('keydown', (e)=>{
-            if(e.key === "Escape"){
+        document.addEventListener('keydown', (e)=> {
+            if (e.key === "Escape") {
                 this.setState({
                     open: false
                 });
@@ -65,7 +65,7 @@ export class Select extends React.Component {
             if (
                 !this.state.filter
                 ||
-                this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase())
+                this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase().trim())
                 !== -1
             ) {
                 visibleItems.push(
@@ -126,7 +126,9 @@ export class Select extends React.Component {
                            this.toggle(!this.state.open)
                        }
                    }}
-                   ref={(e) => { this.link = e; }}
+                   ref={(e) => {
+                       this.link = e;
+                   }}
                    className={this.state.open ? 'selected selected-open' : 'selected'}
                 >
                     <div
