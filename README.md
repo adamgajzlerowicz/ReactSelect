@@ -16,11 +16,11 @@ usage:
 ```
 import React from 'react';
 import {render} from 'react-dom';
-import {Select} from 'select-react-redux';
+import Select from 'select-react-redux';
 
 const items = {
     'item1': 'Mercedes Benz C40',
-    'item2': 'Mazda X11',
+    'item2': 'Mazda 6',
 };
 
 const onChange = (val) => {

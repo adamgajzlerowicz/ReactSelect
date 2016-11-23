@@ -9,6 +9,10 @@
     background-color: rgb(88, 151, 251);
 }
 
+.select-react-redux-container .item-highlighted{
+    background-color: rgb(88, 151, 251);
+}
+
 .select-react-redux-container .item-no-results{
 
 }
