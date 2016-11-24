@@ -171,7 +171,7 @@ export class Select extends React.Component {
         return item.key == this.state.currentlyHighlighted;
     }
 
-    setNextHighlightedItem(direction = null) {
+    setNextHighlightedItem(direction = null, isSearching = false) {
         const currentIndex = this.state.visibleItems.findIndex(this.findIndex);
         let newIndex = 0;
         if (direction == 'down' && currentIndex < this.state.visibleItems.length - 1 && currentIndex != -1) {
@@ -184,7 +184,7 @@ export class Select extends React.Component {
         this.setState({
             currentlyHighlighted: this.state.visibleItems[newIndex].key
         }, ()=> {
-            this.getVisibleItems();
+            this.getVisibleItems(isSearching);
         });
     };
 
@@ -218,9 +218,7 @@ export class Select extends React.Component {
         this.setState({
             filter: e.target.value
         }, ()=> {
-            this.getVisibleItems(true);
-            this.setNextHighlightedItem();
-            this.getVisibleItems(true);
+            this.setNextHighlightedItem(null, true);
         });
     }
 
