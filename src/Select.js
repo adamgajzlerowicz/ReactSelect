@@ -36,6 +36,10 @@ export class Select extends React.Component {
                     open: false,
                     filter: ''
                 });
+                this.setState({
+                    currentlyHighlighted: '',
+                });
+                this.getVisibleItems();
                 if (ReactDom.findDOMNode(this).contains(e.target)) {
                     this.link.focus();
                 }
@@ -102,7 +106,7 @@ export class Select extends React.Component {
                         first = false;
                         className = 'item item-selected';
                         this.setState({
-                            currentlyHighlighted: ''
+                            currentlyHighlighted: key
                         })
                     } else {
                         className = 'item'
@@ -169,13 +173,15 @@ export class Select extends React.Component {
         return item.key == this.state.currentlyHighlighted;
     }
 
-    setNextHighlightedItem(direction) {
+    setNextHighlightedItem(direction = null) {
         const currentIndex = this.state.visibleItems.findIndex(this.findIndex);
         let newIndex = 0;
         if (direction == 'down' && currentIndex < this.state.visibleItems.length - 1 && currentIndex != -1) {
             newIndex = currentIndex + 1;
         } else if (direction == 'up' && currentIndex > 0) {
             newIndex = currentIndex - 1;
+        } else if (!direction){
+            newIndex = 0;
         }
         this.setState({
             currentlyHighlighted: this.state.visibleItems[newIndex].key
@@ -196,7 +202,8 @@ export class Select extends React.Component {
 
     inputOnKeyPress(e) {
         if (e.key === 'Esc') {
-            this.toggle(!this.state.open)
+            this.toggle(!this.state.open);
+
         }
         if (e.key === 'Enter') {
             if (this.state.currentlyHighlighted != '') {
@@ -212,6 +219,7 @@ export class Select extends React.Component {
             filter: e.target.value
         }, ()=> {
             this.getVisibleItems(true);
+            this.setNextHighlightedItem();
         });
     }
 
