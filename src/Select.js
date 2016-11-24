@@ -1,6 +1,17 @@
 import React from 'react';
 var ReactDom = require('react-dom');
 
+var Item = ({index, styles, label}) => {
+    return (
+        <div
+            onClick={() => {
+                this.trigger(index);
+            }}
+            className={styles}
+        >{label}
+        </div>
+    )
+}
 export class Select extends React.Component {
     constructor(props) {
         super(props);
@@ -108,14 +119,8 @@ export class Select extends React.Component {
                         + (this.state.currentlyHighlighted.key == key ? " item-highlighted" : "");
                 }
                 visibleItems.push(
-                    <div
-                        onClick={() => {
-                            this.trigger(key);
-                        }}
-                        key={key}
-                        className={className}
-                    >{this.props.items[key]}
-                    </div>);
+                    <Item label={this.props.items[key]} key={key} styles={className} />
+                );
                 count = count + 1;
             }
         });
@@ -126,7 +131,13 @@ export class Select extends React.Component {
                     key={null}
                     className="item item-no-results"
                 >No results found</div>
-            )
+            );
+            this.setState({
+                currentlyHighlighted: {
+                    key: '',
+                    index: -1
+                }
+            })
         }
 
         this.setState({
@@ -210,9 +221,11 @@ export class Select extends React.Component {
                                     this.toggle(!this.state.open)
                                 }
                                 if (e.key === 'Enter') {
-                                    this.trigger(this.state.currentlyHighlighted.key);
-                                    this.toggle(!this.state.open);
-                                    this.link.focus();
+                                    if(this.state.currentlyHighlighted.index > -1){
+                                        this.trigger(this.state.currentlyHighlighted.key);
+                                        this.toggle(!this.state.open);
+                                        this.link.focus();
+                                    }
                                 }
                             }}
                             onChange={(e)=> {
