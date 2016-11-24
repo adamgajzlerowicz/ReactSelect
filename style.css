@@ -45,10 +45,40 @@
     border-radius: 6px 6px 0 0;
 }
 
-.top-bar{
+.select-react-redux-container  .top-bar{
     padding: 5px 7px;
 }
 
-.top-bar-empty{
+.select-react-redux-container .top-bar-empty{
     color: #AAAAAA;
+}
+
+.select-react-redux-container input{
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+}
+
+.select-react-redux-container .results-container{
+    display: none;
+    border-radius: 0 0 6px 6px;
+    border-bottom: 1px rgb(170, 170, 170) solid;
+    border-left: 1px rgb(170, 170, 170) solid;
+    border-right: 1px rgb(170, 170, 170) solid;
+    font-size: 15px;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    z-index: 9999;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.select-react-redux-container .results-container.open {
+    display: block;
+}
+
+.select-react-redux-container .input-container {
+    padding: 5px 7px;
 }

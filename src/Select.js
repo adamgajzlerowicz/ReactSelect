@@ -6,6 +6,12 @@ export class Select extends React.Component {
         super(props);
         this.getVisibleItems = this.getVisibleItems.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
+        this.inputOnChange = this.inputOnChange.bind(this);
+        this.inputOnKeyPress = this.inputOnKeyPress.bind(this);
+        this.inputOnKeyDown = this.inputOnKeyDown.bind(this);
+        this.linkOnKeyDown = this.linkOnKeyDown.bind(this);
+        this.setNextHighlightedItem = this.setNextHighlightedItem.bind(this);
+        this.findIndex = this.findIndex.bind(this);
     }
 
     componentWillMount() {
@@ -17,10 +23,7 @@ export class Select extends React.Component {
             selectedItemLabel: '',
             visibleItems: [],
             tabIndex: this.props.tabIndex ? this.props.tabIndex : null,
-            currentlyHighlighted: {
-                index: -1,
-                key: ''
-            }
+            currentlyHighlighted: ''
         });
         document.addEventListener('click', this.handleOutsideClick, false);
     }
@@ -33,10 +36,13 @@ export class Select extends React.Component {
                     open: false,
                     filter: ''
                 });
+                this.setState({
+                    currentlyHighlighted: '',
+                });
+                this.getVisibleItems();
                 if (ReactDom.findDOMNode(this).contains(e.target)) {
                     this.link.focus();
                 }
-
             }
         });
     };
@@ -53,6 +59,12 @@ export class Select extends React.Component {
             this.setState({
                 filter: ''
             });
+        } else {
+            if(this.state.selectedItem){
+                this.setState({
+                    currentlyHighlighted: this.state.selectedItem
+                });
+            }
         }
     };
 
@@ -64,23 +76,20 @@ export class Select extends React.Component {
         }
     }
 
-    trigger(value) {
+    submit(value) {
         this.props.onChange(value);
         this.setState({
             selectedItem: value,
             selectedItemLabel: this.props.items[value],
             open: false,
-            currentlyHighlighted: {
-                index: -1,
-                key: ''
-            }
+            currentlyHighlighted: ''
         }, ()=> {
             this.getVisibleItems();
         })
     }
 
     getVisibleItems(isSearching) {
-        var count = 0;
+        var first = true;
         const visibleItems = [];
         Object.keys(this.props.items).forEach((key)=> {
             if (
@@ -91,32 +100,42 @@ export class Select extends React.Component {
             ) {
                 var className = '';
                 if (isSearching) {
-                    if (count == 0) {
+                    if (first == true) {
+                        first = false;
                         className = 'item item-selected';
                         this.setState({
-                            currentlyHighlighted: {
-                                index: 0,
-                                key: [key]
-                            }
+                            currentlyHighlighted: key
                         })
                     } else {
                         className = 'item'
                     }
                 } else {
-                    className = "item"
-                        + (key == this.state.selectedItem ? " item-selected" : "")
-                        + (this.state.currentlyHighlighted.key == key ? " item-highlighted" : "");
+                    className = (
+                        (key == this.state.currentlyHighlighted && this.state.selectedItem == '')
+                        ||
+                        (key == this.state.selectedItem && this.state.currentlyHighlighted == '')
+                        ||
+                        (
+                            this.state.currentlyHighlighted != ''
+                            &&
+                            this.state.selectedItem != ''
+                            &&
+                            key == this.state.currentlyHighlighted
+                        )
+                    )
+                        ? 'item item-selected' : 'item';
                 }
                 visibleItems.push(
                     <div
                         onClick={() => {
-                            this.trigger(key);
+                            this.submit(key);
                         }}
                         key={key}
                         className={className}
                     >{this.props.items[key]}
-                    </div>);
-                count = count + 1;
+                    </div>
+                );
+
             }
         });
 
@@ -126,7 +145,10 @@ export class Select extends React.Component {
                     key={null}
                     className="item item-no-results"
                 >No results found</div>
-            )
+            );
+            this.setState({
+                currentlyHighlighted: ''
+            })
         }
 
         this.setState({
@@ -145,58 +167,100 @@ export class Select extends React.Component {
         }
     };
 
+    findIndex(item) {
+        return item.key == this.state.currentlyHighlighted;
+    }
+
+    setNextHighlightedItem(direction = null) {
+        const currentIndex = this.state.visibleItems.findIndex(this.findIndex);
+        let newIndex = 0;
+        if (direction == 'down' && currentIndex < this.state.visibleItems.length - 1 && currentIndex != -1) {
+            newIndex = currentIndex + 1;
+        } else if (direction == 'up' && currentIndex > 0) {
+            newIndex = currentIndex - 1;
+        } else if (!direction){
+            newIndex = 0;
+        }
+        this.setState({
+            currentlyHighlighted: this.state.visibleItems[newIndex].key
+        }, ()=> {
+            this.getVisibleItems();
+        });
+    };
+
+    inputOnKeyDown(e) {
+        if (e.key === 'ArrowDown') {
+            this.setNextHighlightedItem('down');
+        }
+
+        if (e.key === 'ArrowUp') {
+            this.setNextHighlightedItem('up');
+        }
+    }
+
+    inputOnKeyPress(e) {
+        if (e.key === 'Esc') {
+            this.toggle(!this.state.open);
+
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (this.state.currentlyHighlighted != '') {
+                this.submit(this.state.currentlyHighlighted);
+                this.toggle(!this.state.open);
+                this.link.focus();
+            }
+            return false;
+        }
+    }
+
+    inputOnChange(e) {
+        this.setState({
+            filter: e.target.value
+        }, ()=> {
+            this.getVisibleItems(true);
+            this.setNextHighlightedItem();
+            this.getVisibleItems(true);
+        });
+    }
+
+    linkOnKeyDown(e) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            this.setState({
+                open: true
+            })
+        }
+    }
+
     render() {
         return (
 
             <div className="select-react-redux-container">
-
                 <a href="#"
                    tabIndex={this.state.tabIndex}
                    onClick={()=> {
                        this.toggle(!this.state.open)
                    }}
-                   onKeyPress={(e)=> {
-                       this.setState({
-                           open: true
-                       })
+                   onKeyPress={()=> {
+                       this.setState({open: true})
                    }}
                    ref={(e) => {
                        this.link = e;
                    }}
-                   onKeyDown={(e)=> {
-                       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                           this.setState({
-                               open: true
-                           })
-                       }
-                   }}
+                   onKeyDown={this.linkOnKeyDown}
                    className={this.state.open ? 'selected selected-open' : 'selected'}
                 >
                     <div
                         className={Object.keys(this.state.items).length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
                         {this.state.selectedItemLabel
                             ? this.state.selectedItemLabel
-                            : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}</div>
+                            : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}
+                    </div>
                 </a>
 
-                <div style={{
-                    display: this.state.open ? 'block' : 'none',
-                    borderRadius: '0 0 6px 6px',
-                    borderBottom: '1px rgb(170, 170, 170) solid',
-                    borderLeft: '1px rgb(170, 170, 170) solid',
-                    borderRight: '1px rgb(170, 170, 170) solid',
-                    fontSize: 15,
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                    width: '100%',
-                    zIndex: '9999',
-                    maxHeight: 300,
-                    overflow: 'auto'
-                }}>
+                <div className={this.state.open ? 'results-container open' : 'results-container' }>
 
-                    <div style={{
-                        padding: '5px 7px'
-                    }}>
+                    <div className="input-container">
                         <input
                             type="text"
                             autoCorrect="off"
@@ -205,55 +269,9 @@ export class Select extends React.Component {
                             autoComplete="off"
                             ref={search => search && search.focus()}
                             value={this.state.filter}
-                            onKeyPress={(e)=> {
-                                if (e.key === 'Esc') {
-                                    this.toggle(!this.state.open)
-                                }
-                                if (e.key === 'Enter') {
-                                    this.trigger(this.state.currentlyHighlighted.key);
-                                    this.toggle(!this.state.open);
-                                    this.link.focus();
-                                }
-                            }}
-                            onChange={(e)=> {
-                                this.setState({
-                                    filter: e.target.value
-                                }, ()=> {
-                                    this.getVisibleItems(true);
-                                });
-                            }}
-                            onKeyDown={(e)=> {
-                                if (e.key === 'ArrowDown') {
-                                    let index = this.state.currentlyHighlighted.index == this.state.visibleItems.length - 1
-                                        ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index + 1;
-                                    this.setState({
-                                        currentlyHighlighted: {
-                                            key: this.state.visibleItems[index].key,
-                                            index: index
-                                        }
-                                    }, ()=> {
-                                        this.getVisibleItems();
-                                    });
-                                }
-                                if (e.key === 'ArrowUp') {
-                                    let index = this.state.currentlyHighlighted.index == -1
-                                        ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index - 1;
-                                    this.setState({
-                                        currentlyHighlighted: {
-                                            key: index === -1 ? '' : this.state.visibleItems[index].key,
-                                            index: index
-                                        }
-                                    }, ()=> {
-                                        this.getVisibleItems();
-                                    });
-                                }
-                            }}
-                            style={{
-                                fontSize: 15,
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                padding: '4px',
-                            }}
+                            onKeyPress={this.inputOnKeyPress}
+                            onChange={this.inputOnChange}
+                            onKeyDown={this.inputOnKeyDown}
                         />
                     </div>
                     {this.state.visibleItems}
