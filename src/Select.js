@@ -79,19 +79,34 @@ export class Select extends React.Component {
         })
     }
 
-    getVisibleItems() {
+    getVisibleItems(isSearching) {
+        var count = 0;
         const visibleItems = [];
-        Object.keys(this.props.items).forEach(key=> {
+        Object.keys(this.props.items).forEach((key)=> {
             if (
                 !this.state.filter
                 ||
                 this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase().trim())
                 !== -1
             ) {
-                let className = "item"
-                    + (key == this.state.selectedItem ? " item-selected" : "")
-                    + (this.state.currentlyHighlighted.key == key ? " item-highlighted" : "");
-
+                var className = ''
+                if (isSearching) {
+                    if (count == 0) {
+                        className = 'item item-selected';
+                        this.setState({
+                            currentlyHighlighted: {
+                                index: 0,
+                                key: [key]
+                            }
+                        })
+                    } else {
+                        className = 'item'
+                    }
+                } else {
+                    className = "item"
+                        + (key == this.state.selectedItem ? " item-selected" : "")
+                        + (this.state.currentlyHighlighted.key == key ? " item-highlighted" : "");
+                }
                 visibleItems.push(
                     <div
                         onClick={() => {
@@ -100,7 +115,8 @@ export class Select extends React.Component {
                         key={key}
                         className={className}
                     >{this.props.items[key]}
-                    </div>)
+                    </div>);
+                count = count + 1;
             }
         });
         if (visibleItems.length === 0) {
@@ -195,7 +211,7 @@ export class Select extends React.Component {
                                 this.setState({
                                     filter: e.target.value
                                 }, ()=> {
-                                    this.getVisibleItems();
+                                    this.getVisibleItems(true);
                                 });
                             }}
                             onKeyDown={(e)=> {
@@ -212,11 +228,11 @@ export class Select extends React.Component {
                                     });
                                 }
                                 if (e.key === 'ArrowUp') {
-                                    let index = this.state.currentlyHighlighted.index == 0
-                                        ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index -1;
+                                    let index = this.state.currentlyHighlighted.index == -1
+                                        ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index - 1;
                                     this.setState({
                                         currentlyHighlighted: {
-                                            key: this.state.visibleItems[index].key,
+                                            key: index === -1 ? '' : this.state.visibleItems[index].key,
                                             index: index
                                         }
                                     }, ()=> {
