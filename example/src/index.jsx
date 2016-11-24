@@ -4,7 +4,8 @@ import {Select} from '../../lib';
 
 const items = {
     'item1': 'Mercedes Benz C40',
-    'item2': 'Mazda X11',
+    'item2': 'Mazda 6',
+    'item3': 'Rover Discovery Sport'
 };
 
 const onChange = (val) => {

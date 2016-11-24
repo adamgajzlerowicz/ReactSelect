@@ -119,6 +119,7 @@ export class Select extends React.Component {
                 count = count + 1;
             }
         });
+
         if (visibleItems.length === 0) {
             visibleItems.push(
                 <div
