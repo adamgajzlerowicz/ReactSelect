@@ -1,22 +1,15 @@
 import React from 'react';
 var ReactDom = require('react-dom');
 
-var Item = ({index, styles, label}) => {
-    return (
-        <div
-            onClick={() => {
-                this.trigger(index);
-            }}
-            className={styles}
-        >{label}
-        </div>
-    )
-}
 export class Select extends React.Component {
     constructor(props) {
         super(props);
         this.getVisibleItems = this.getVisibleItems.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
+        this.inputOnChange = this.inputOnChange.bind(this);
+        this.inputOnKeyPress = this.inputOnKeyPress.bind(this);
+        this.inputOnKeyDown = this.inputOnKeyDown.bind(this);
+        this.linkOnKeyDown = this.linkOnKeyDown.bind(this);
     }
 
     componentWillMount() {
@@ -64,6 +57,16 @@ export class Select extends React.Component {
             this.setState({
                 filter: ''
             });
+        }else{
+            // if(this.state.selectedItem){
+            //     this.setState({
+            //         currentlyHighlighted: {
+            //             index: 1,
+            //             key: this.state.selectedItem
+            //         }
+            //     });
+            // }
+
         }
     };
 
@@ -75,7 +78,7 @@ export class Select extends React.Component {
         }
     }
 
-    trigger(value) {
+    submit(value) {
         this.props.onChange(value);
         this.setState({
             selectedItem: value,
@@ -91,7 +94,7 @@ export class Select extends React.Component {
     }
 
     getVisibleItems(isSearching) {
-        var count = 0;
+        var first = true;
         const visibleItems = [];
         Object.keys(this.props.items).forEach((key)=> {
             if (
@@ -102,7 +105,8 @@ export class Select extends React.Component {
             ) {
                 var className = '';
                 if (isSearching) {
-                    if (count == 0) {
+                    if (first == true) {
+                        first = false;
                         className = 'item item-selected';
                         this.setState({
                             currentlyHighlighted: {
@@ -114,14 +118,32 @@ export class Select extends React.Component {
                         className = 'item'
                     }
                 } else {
-                    className = "item"
-                        + (key == this.state.selectedItem ? " item-selected" : "")
-                        + (this.state.currentlyHighlighted.key == key ? " item-highlighted" : "");
+                    className = (
+                        (key == this.state.currentlyHighlighted.key && this.state.selectedItem == '')
+                        ||
+                        (key == this.state.selectedItem && this.state.currentlyHighlighted.key == '')
+                        ||
+                        (
+                            this.state.currentlyHighlighted.key != ''
+                        &&
+                            this.state.selectedItem != ''
+                        &&
+                            key == this.state.currentlyHighlighted.key
+                        )
+                    )
+                        ? 'item item-selected' : 'item';
                 }
                 visibleItems.push(
-                    <Item label={this.props.items[key]} key={key} styles={className} />
+                    <div
+                        onClick={() => {
+                            this.submit(key);
+                        }}
+                        key={key}
+                        className={className}
+                    >{this.props.items[key]}
+                    </div>
                 );
-                count = count + 1;
+
             }
         });
 
@@ -156,31 +178,80 @@ export class Select extends React.Component {
         }
     };
 
+    inputOnKeyDown(e) {
+        if (e.key === 'ArrowDown') {
+            let index = this.state.currentlyHighlighted.index == this.state.visibleItems.length - 1
+                ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index + 1;
+            this.setState({
+                currentlyHighlighted: {
+                    key: this.state.visibleItems[index].key,
+                    index: index
+                }
+            }, ()=> {
+                this.getVisibleItems();
+            });
+        }
+
+        if (e.key === 'ArrowUp') {
+            let index = this.state.currentlyHighlighted.index == -1
+                ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index - 1;
+            this.setState({
+                currentlyHighlighted: {
+                    key: index === -1 ? '' : this.state.visibleItems[index].key,
+                    index: index
+                }
+            }, ()=> {
+                this.getVisibleItems();
+            });
+        }
+    }
+
+    inputOnKeyPress(e) {
+        if (e.key === 'Esc') {
+            this.toggle(!this.state.open)
+        }
+        if (e.key === 'Enter') {
+            console.log(this.state.currentlyHighlighted.key);
+            if (this.state.currentlyHighlighted.index > -1) {
+                this.submit(this.state.currentlyHighlighted.key);
+                this.toggle(!this.state.open);
+                this.link.focus();
+            }
+        }
+    }
+
+    inputOnChange(e) {
+        this.setState({
+            filter: e.target.value
+        }, ()=> {
+            this.getVisibleItems(true);
+        });
+    }
+
+    linkOnKeyDown(e) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            this.setState({
+                open: true
+            })
+        }
+    }
+
     render() {
         return (
 
             <div className="select-react-redux-container">
-
                 <a href="#"
                    tabIndex={this.state.tabIndex}
                    onClick={()=> {
                        this.toggle(!this.state.open)
                    }}
-                   onKeyPress={(e)=> {
-                       this.setState({
-                           open: true
-                       })
+                   onKeyPress={()=> {
+                       this.setState({open: true})
                    }}
                    ref={(e) => {
                        this.link = e;
                    }}
-                   onKeyDown={(e)=> {
-                       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                           this.setState({
-                               open: true
-                           })
-                       }
-                   }}
+                   onKeyDown={this.linkOnKeyDown}
                    className={this.state.open ? 'selected selected-open' : 'selected'}
                 >
                     <div
@@ -190,24 +261,9 @@ export class Select extends React.Component {
                             : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}</div>
                 </a>
 
-                <div style={{
-                    display: this.state.open ? 'block' : 'none',
-                    borderRadius: '0 0 6px 6px',
-                    borderBottom: '1px rgb(170, 170, 170) solid',
-                    borderLeft: '1px rgb(170, 170, 170) solid',
-                    borderRight: '1px rgb(170, 170, 170) solid',
-                    fontSize: 15,
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                    width: '100%',
-                    zIndex: '9999',
-                    maxHeight: 300,
-                    overflow: 'auto'
-                }}>
+                <div className={this.state.open ? 'results-container open' : 'results-container' }>
 
-                    <div style={{
-                        padding: '5px 7px'
-                    }}>
+                    <div className="input-container">
                         <input
                             type="text"
                             autoCorrect="off"
@@ -216,57 +272,9 @@ export class Select extends React.Component {
                             autoComplete="off"
                             ref={search => search && search.focus()}
                             value={this.state.filter}
-                            onKeyPress={(e)=> {
-                                if (e.key === 'Esc') {
-                                    this.toggle(!this.state.open)
-                                }
-                                if (e.key === 'Enter') {
-                                    if(this.state.currentlyHighlighted.index > -1){
-                                        this.trigger(this.state.currentlyHighlighted.key);
-                                        this.toggle(!this.state.open);
-                                        this.link.focus();
-                                    }
-                                }
-                            }}
-                            onChange={(e)=> {
-                                this.setState({
-                                    filter: e.target.value
-                                }, ()=> {
-                                    this.getVisibleItems(true);
-                                });
-                            }}
-                            onKeyDown={(e)=> {
-                                if (e.key === 'ArrowDown') {
-                                    let index = this.state.currentlyHighlighted.index == this.state.visibleItems.length - 1
-                                        ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index + 1;
-                                    this.setState({
-                                        currentlyHighlighted: {
-                                            key: this.state.visibleItems[index].key,
-                                            index: index
-                                        }
-                                    }, ()=> {
-                                        this.getVisibleItems();
-                                    });
-                                }
-                                if (e.key === 'ArrowUp') {
-                                    let index = this.state.currentlyHighlighted.index == -1
-                                        ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index - 1;
-                                    this.setState({
-                                        currentlyHighlighted: {
-                                            key: index === -1 ? '' : this.state.visibleItems[index].key,
-                                            index: index
-                                        }
-                                    }, ()=> {
-                                        this.getVisibleItems();
-                                    });
-                                }
-                            }}
-                            style={{
-                                fontSize: 15,
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                padding: '4px',
-                            }}
+                            onKeyPress={this.inputOnKeyPress}
+                            onChange={this.inputOnChange}
+                            onKeyDown={this.inputOnKeyDown}
                         />
                     </div>
                     {this.state.visibleItems}
