@@ -89,7 +89,7 @@ export class Select extends React.Component {
                 this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase().trim())
                 !== -1
             ) {
-                var className = ''
+                var className = '';
                 if (isSearching) {
                     if (count == 0) {
                         className = 'item item-selected';
@@ -161,6 +161,13 @@ export class Select extends React.Component {
                    }}
                    ref={(e) => {
                        this.link = e;
+                   }}
+                   onKeyDown={(e)=> {
+                       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                           this.setState({
+                               open: true
+                           })
+                       }
                    }}
                    className={this.state.open ? 'selected selected-open' : 'selected'}
                 >
