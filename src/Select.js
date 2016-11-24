@@ -188,7 +188,7 @@ export class Select extends React.Component {
                                 if (e.key === 'Enter') {
                                     this.trigger(this.state.currentlyHighlighted.key);
                                     this.toggle(!this.state.open);
-
+                                    this.link.focus();
                                 }
                             }}
                             onChange={(e)=> {
