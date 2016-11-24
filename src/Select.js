@@ -43,7 +43,6 @@ export class Select extends React.Component {
                 if (ReactDom.findDOMNode(this).contains(e.target)) {
                     this.link.focus();
                 }
-
             }
         });
     };
@@ -66,7 +65,6 @@ export class Select extends React.Component {
                     currentlyHighlighted: this.state.selectedItem
                 });
             }
-
         }
     };
 
@@ -220,6 +218,7 @@ export class Select extends React.Component {
         }, ()=> {
             this.getVisibleItems(true);
             this.setNextHighlightedItem();
+            this.getVisibleItems(true);
         });
     }
 
@@ -253,7 +252,8 @@ export class Select extends React.Component {
                         className={Object.keys(this.state.items).length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
                         {this.state.selectedItemLabel
                             ? this.state.selectedItemLabel
-                            : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}</div>
+                            : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}
+                    </div>
                 </a>
 
                 <div className={this.state.open ? 'results-container open' : 'results-container' }>
