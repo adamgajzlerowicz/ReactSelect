@@ -10,6 +10,8 @@ export class Select extends React.Component {
         this.inputOnKeyPress = this.inputOnKeyPress.bind(this);
         this.inputOnKeyDown = this.inputOnKeyDown.bind(this);
         this.linkOnKeyDown = this.linkOnKeyDown.bind(this);
+        this.setNextHighlightedItem = this.setNextHighlightedItem.bind(this);
+        this.findIndex = this.findIndex.bind(this);
     }
 
     componentWillMount() {
@@ -21,10 +23,7 @@ export class Select extends React.Component {
             selectedItemLabel: '',
             visibleItems: [],
             tabIndex: this.props.tabIndex ? this.props.tabIndex : null,
-            currentlyHighlighted: {
-                index: -1,
-                key: ''
-            }
+            currentlyHighlighted: ''
         });
         document.addEventListener('click', this.handleOutsideClick, false);
     }
@@ -57,15 +56,12 @@ export class Select extends React.Component {
             this.setState({
                 filter: ''
             });
-        }else{
-            // if(this.state.selectedItem){
-            //     this.setState({
-            //         currentlyHighlighted: {
-            //             index: 1,
-            //             key: this.state.selectedItem
-            //         }
-            //     });
-            // }
+        } else {
+            if(this.state.selectedItem){
+                this.setState({
+                    currentlyHighlighted: this.state.selectedItem
+                });
+            }
 
         }
     };
@@ -84,10 +80,7 @@ export class Select extends React.Component {
             selectedItem: value,
             selectedItemLabel: this.props.items[value],
             open: false,
-            currentlyHighlighted: {
-                index: -1,
-                key: ''
-            }
+            currentlyHighlighted: ''
         }, ()=> {
             this.getVisibleItems();
         })
@@ -109,26 +102,23 @@ export class Select extends React.Component {
                         first = false;
                         className = 'item item-selected';
                         this.setState({
-                            currentlyHighlighted: {
-                                index: 0,
-                                key: [key]
-                            }
+                            currentlyHighlighted: ''
                         })
                     } else {
                         className = 'item'
                     }
                 } else {
                     className = (
-                        (key == this.state.currentlyHighlighted.key && this.state.selectedItem == '')
+                        (key == this.state.currentlyHighlighted && this.state.selectedItem == '')
                         ||
-                        (key == this.state.selectedItem && this.state.currentlyHighlighted.key == '')
+                        (key == this.state.selectedItem && this.state.currentlyHighlighted == '')
                         ||
                         (
-                            this.state.currentlyHighlighted.key != ''
-                        &&
+                            this.state.currentlyHighlighted != ''
+                            &&
                             this.state.selectedItem != ''
-                        &&
-                            key == this.state.currentlyHighlighted.key
+                            &&
+                            key == this.state.currentlyHighlighted
                         )
                     )
                         ? 'item item-selected' : 'item';
@@ -155,10 +145,7 @@ export class Select extends React.Component {
                 >No results found</div>
             );
             this.setState({
-                currentlyHighlighted: {
-                    key: '',
-                    index: -1
-                }
+                currentlyHighlighted: ''
             })
         }
 
@@ -178,31 +165,32 @@ export class Select extends React.Component {
         }
     };
 
+    findIndex(item) {
+        return item.key == this.state.currentlyHighlighted;
+    }
+
+    setNextHighlightedItem(direction) {
+        const currentIndex = this.state.visibleItems.findIndex(this.findIndex);
+        let newIndex = 0;
+        if (direction == 'down' && currentIndex < this.state.visibleItems.length - 1 && currentIndex != -1) {
+            newIndex = currentIndex + 1;
+        } else if (direction == 'up' && currentIndex > 0) {
+            newIndex = currentIndex - 1;
+        }
+        this.setState({
+            currentlyHighlighted: this.state.visibleItems[newIndex].key
+        }, ()=> {
+            this.getVisibleItems();
+        });
+    };
+
     inputOnKeyDown(e) {
         if (e.key === 'ArrowDown') {
-            let index = this.state.currentlyHighlighted.index == this.state.visibleItems.length - 1
-                ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index + 1;
-            this.setState({
-                currentlyHighlighted: {
-                    key: this.state.visibleItems[index].key,
-                    index: index
-                }
-            }, ()=> {
-                this.getVisibleItems();
-            });
+            this.setNextHighlightedItem('down');
         }
 
         if (e.key === 'ArrowUp') {
-            let index = this.state.currentlyHighlighted.index == -1
-                ? this.state.currentlyHighlighted.index : this.state.currentlyHighlighted.index - 1;
-            this.setState({
-                currentlyHighlighted: {
-                    key: index === -1 ? '' : this.state.visibleItems[index].key,
-                    index: index
-                }
-            }, ()=> {
-                this.getVisibleItems();
-            });
+            this.setNextHighlightedItem('up');
         }
     }
 
@@ -211,9 +199,8 @@ export class Select extends React.Component {
             this.toggle(!this.state.open)
         }
         if (e.key === 'Enter') {
-            console.log(this.state.currentlyHighlighted.key);
-            if (this.state.currentlyHighlighted.index > -1) {
-                this.submit(this.state.currentlyHighlighted.key);
+            if (this.state.currentlyHighlighted != '') {
+                this.submit(this.state.currentlyHighlighted);
                 this.toggle(!this.state.open);
                 this.link.focus();
             }
