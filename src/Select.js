@@ -204,11 +204,13 @@ export class Select extends React.Component {
 
         }
         if (e.key === 'Enter') {
+            e.preventDefault();
             if (this.state.currentlyHighlighted != '') {
                 this.submit(this.state.currentlyHighlighted);
                 this.toggle(!this.state.open);
                 this.link.focus();
             }
+            return false;
         }
     }
 
