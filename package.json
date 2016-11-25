@@ -4,7 +4,7 @@
   "description": "A searchable select box, similar to select2.",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --config webpack.dev.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test mocha --require test/helpers/browser.js --recursive test/**/*.spec.js --compilers js:babel-core/register  --require ignore-styles",
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
     "build:prod": "rimraf lib && babel src/ -d lib/",
@@ -37,11 +37,16 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.16.0",
     "babel-preset-stage-1": "^6.3.13",
+    "chai": "^3.5.0",
     "clean-webpack-plugin": "^0.1.14",
+    "enzyme": "^2.6.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "^9.8.3",
     "radium": "^0.18.1",
     "react": "^15.4.0",
+    "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.0",
     "rifraf": "^2.0.3",
     "style-it": "^1.2.11",
@@ -52,6 +57,7 @@
   "devDependencies": {
     "babel-plugin-react-transform": "^2.0.2",
     "css-loader": "^0.26.0",
+    "enzyme": "^2.6.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1"
   }
