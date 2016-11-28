@@ -191,7 +191,7 @@ describe('<Select />', () => {
         });
     });
 
-    describe('Triggers callback with aright value', () => {
+    describe('Triggers callback with a right value', () => {
         it('triggers with click', () => {
             const onChange = sinon.spy();
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
