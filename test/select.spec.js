@@ -1,7 +1,8 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount, shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import {Select} from '../src';
+import sinon from 'sinon';
 
 const items = {
     'item1': 'Mercedes Benz C40',
@@ -10,14 +11,11 @@ const items = {
     'item4': 'Rover Discovery Sport'
 };
 
-const onChange = (val) => {
-    console.log('selected ' + val);
-};
-
-
 describe('<Select />', () => {
 
-    it("contains spec with an expectation", function () {
+    it("contains spec with an expectation", () => {
+        const onChange = () => {
+        };
         const wrapper = mount(<Select items={items} onChange={onChange}/>);
         expect(wrapper.find('div')).to.have.length(8);
         expect(wrapper.find('.select-react-redux-container')).to.have.length(1);
@@ -30,7 +28,9 @@ describe('<Select />', () => {
 
     describe('Open list', () => {
 
-        it("opens on click", function () {
+        it("opens on click", () => {
+            const onChange = () => {
+            };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('.selected').simulate("click");
             expect(wrapper.find('.selected').hasClass('selected-open')).to.equal(true);
@@ -38,16 +38,20 @@ describe('<Select />', () => {
 
         });
 
-        it("opens on arrow Enter", function () {
+        it("opens on arrow Enter", () => {
+            const onChange = () => {
+            };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('.selected').simulate("keyPress", {
-                keyCode: 13
+                key: 'Enter'
             });
             expect(wrapper.find('.selected').hasClass('selected-open')).to.equal(true);
             expect(wrapper.find('.results-container').hasClass('open')).to.equal(true);
         });
 
-        it("opens on arrow ArrowDown", function () {
+        it("opens on arrow ArrowDown", () => {
+            const onChange = () => {
+            };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('.selected').simulate("keyPress", {
                 keyCode: 40
@@ -56,7 +60,9 @@ describe('<Select />', () => {
             expect(wrapper.find('.results-container').hasClass('open')).to.equal(true);
         });
 
-        it("opens on any character key", function () {
+        it("opens on any character key", () => {
+            const onChange = () => {
+            };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('.selected').simulate("keyPress", {
                 keyCode: 's'
@@ -68,7 +74,9 @@ describe('<Select />', () => {
 
     describe('Closes list', () => {
 
-        it("closes on click", function () {
+        it("closes on click", () => {
+            const onChange = () => {
+            };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('.selected').simulate("click");
             wrapper.find('.selected').simulate("click");
@@ -77,22 +85,147 @@ describe('<Select />', () => {
 
         });
 
-        it("closes on escape", function () {
-            const wrapper = mount(<Select items={items} onChange={onChange}/>);
-            wrapper.find('.top-bar').simulate("change", {
-                keyCode: 's'
-            });
+    });
 
-            wrapper.find('input').simulate("keyPress", {
-                key: "Enter"
+    describe('Filters the list', () => {
+
+        it("filters with input filled in", () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate('change', {target: {value: 'Mer'}});
+            expect(wrapper.find('.select-react-redux-container .results-container div.item')).to.have.length(1);
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            expect(wrapper.find('.select-react-redux-container .results-container div.item')).to.have.length(2);
+        })
+    });
+
+    describe('Highlight items', () => {
+
+        it('highlights with arrow down', () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
             });
-            // console.log(wrapper.debug());
-            // expect(wrapper.find('.selected').hasClass('selected-open')).to.equal(false);
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item1');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item4');
+        });
+
+        it('highlights with arrow up', () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item1');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+        });
+
+        it('highlights with search', () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+        });
+
+        it('highlights items with arrows on filtered list', () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowDown'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            wrapper.find('input').simulate("keyDown", {
+                key: 'ArrowUp'
+            });
+            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+        });
+    });
+
+    describe('Triggers callback with aright value', () => {
+        it('triggers with click', () => {
+            const onChange = sinon.spy();
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            wrapper.find('.item').first().simulate('click');
+            expect(onChange.calledOnce).to.equal(true);
+        });
+
+        it('triggers with enter', () => {
+            const onChange = sinon.spy();
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            wrapper.find('input').simulate("keyPress", {
+                key: 'Enter'
+            });
+            expect(onChange.calledOnce).to.equal(true);
         });
 
     });
 
-    describe('Filters the list',()=>{
-        it('with input filled in')
-    })
+    describe('Changes display of top bar', () => {
+
+        it('changes after item was selected', () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            wrapper.find('input').simulate("keyPress", {
+                key: 'Enter'
+            });
+            expect((wrapper.find('.top-bar').text())).to.equal('Mazda 6');
+        });
+
+        it('knows about no results items supplied', () => {
+            const onChange = () => {
+            };
+            const wrapper = mount(<Select items={{}} onChange={onChange}/>);
+            expect((wrapper.find('.top-bar').text())).to.equal('No options available');
+
+        })
+    });
 });

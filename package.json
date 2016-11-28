@@ -49,6 +49,7 @@
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.0",
     "rifraf": "^2.0.3",
+    "sinon": "^1.17.6",
     "style-it": "^1.2.11",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.3",
