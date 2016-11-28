@@ -42,6 +42,7 @@
     "babel-preset-stage-1": "^6.3.13",
     "chai": "^3.5.0",
     "clean-webpack-plugin": "^0.1.14",
+    "deep-freeze": "0.0.1",
     "enzyme": "^2.6.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",

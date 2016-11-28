@@ -2,39 +2,130 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Provider, connect} from 'react-redux';
 import {createStore} from 'redux';
+import actions from './actions';
+import {reducers} from './reducers';
+const ReactDom = require('react-dom');
 
-function getVisibleItems(items, filter) {
-    return items
-}
 
+const NoItems = () => {
+    return (
+        <div
+            key={null}
+            className="item item-no-results"
+        >No results found</div>
+    );
+};
+
+const addListeners = ({}) => {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            this.setState({
+                open: false,
+                filter: ''
+            });
+            this.setState({
+                currentlyHighlighted: '',
+            });
+            this.getVisibleItems();
+            if (ReactDom.findDOMNode(this).contains(e.target)) {
+                this.link.focus();
+            }
+        }
+    });
+
+    document.addEventListener('click', () => {
+        if (!ReactDom.findDOMNode(this).contains(e.target)) {
+            // this.setState({
+            //     open: false,
+            //     filter: ''
+            // }, () => {
+            //     this.getVisibleItems();
+            // })
+        }
+    }, false);
+};
 const Presentation = ({...props}) => {
     console.log(props);
+
+    const visibleItems = Object.keys(props.items).map((item) => {
+        /*
+         const className = (
+         (key == this.state.currentlyHighlighted && this.state.selectedItem == '')
+         ||
+         (key == this.state.selectedItem && this.state.currentlyHighlighted == '')
+         ||
+         (
+         this.state.currentlyHighlighted != ''
+         &&
+         this.state.selectedItem != ''
+         &&
+         key == this.state.currentlyHighlighted
+         )
+         )
+         ? 'item item-selected' : 'item';
+         */
+
+        return (
+            <div
+                onClick={(item) => {
+                    props.onClick(item);
+                }}
+                key={item}
+                className={null}
+            >
+                {props.items[item]}
+            </div>
+        )
+
+    });
+
     return (
-        <div>component</div>
+        <div className="select-react-redux-container">
+            <a href="#"
+               tabIndex={props.tabIndex}
+               onClick={() => {
+                   this.toggle(!props.open)
+               }}
+               onKeyPress={() => {
+                   this.setState({open: true})
+               }}
+               onKeyDown={props.linkOnKeyDown}
+               className={props.open ? 'selected selected-open' : 'selected'}
+            >
+                <div
+                    className={props.items.length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
+                    {props.selectedItemLabel
+                        ? props.selectedItemLabel
+                        : props.items.length == 0 ? 'No options available' : 'Please select...'}
+                </div>
+            </a>
+
+            <div className={props.open ? 'results-container open' : 'results-container' }>
+
+                <div className="input-container">
+                    <input
+                        type="text"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        autoComplete="off"
+                        ref={search => search && search.focus()}
+                        value={props.filter}
+                        onKeyPress={props.inputOnKeyPress}
+                        onChange={props.inputOnChange}
+                        onKeyDown={props.inputOnKeyDown}
+                    />
+                </div>
+                {visibleItems || NoItems}
+            </div>
+        </div>
     );
 };
 
 const actions = {};
 
+
 export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
-
-    function reducers(state = {
-        visibleItems: getVisibleItems(items, ''),
-        selected: '',
-        open: false,
-        filter: '',
-        selectedItem: selected,
-        selectedItemLabel: '',
-        tabIndex: tabIndex,
-        currentlyHighlighted: ''
-    }, action) {
-        switch(action){
-            case '':
-                return state;
-        }
-        return state;
-    }
-
     const store = createStore(reducers);
 
     const mapStateToProps = (state = {}) => {
@@ -45,6 +136,32 @@ export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
         return {
             submit: () => {
                 onClick()
+            },
+            linkOnKeyDown: () => {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    console.log('should open the thing');
+                }
+            },
+            inputOnKeyPress: () => {
+                if (e.key === 'Esc') {
+                    console.log('Esc');
+                }
+
+                if (e.key === 'Enter') {
+                    console.log('Enter');
+                }
+            },
+            inputOnChange: () => {
+                console.log('changed input');
+            },
+            inputOnKeyDown: () => {
+                if (e.key === 'ArrowDown') {
+                    console.log('arrow down');
+                }
+
+                if (e.key === 'ArrowUp') {
+                    console.log('arrow up');
+                }
             }
         }
     };
@@ -61,176 +178,6 @@ export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
     )
 };
 
-// class FFFF extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.getVisibleItems = this.getVisibleItems.bind(this);
-//         this.handleOutsideClick = this.handleOutsideClick.bind(this);
-//         this.inputOnChange = this.inputOnChange.bind(this);
-//         this.inputOnKeyPress = this.inputOnKeyPress.bind(this);
-//         this.inputOnKeyDown = this.inputOnKeyDown.bind(this);
-//         this.linkOnKeyDown = this.linkOnKeyDown.bind(this);
-//         this.setNextHighlightedItem = this.setNextHighlightedItem.bind(this);
-//         this.findIndex = this.findIndex.bind(this);
-//     }
-//
-//     componentWillMount() {
-//         this.setState({
-//             open: false,
-//             items: this.props.items ? this.props.items : {},
-//             filter: '',
-//             selectedItem: '',
-//             selectedItemLabel: '',
-//             visibleItems: [],
-//             tabIndex: this.props.tabIndex ? this.props.tabIndex : null,
-//             currentlyHighlighted: ''
-//         });
-//         document.addEventListener('click', this.handleOutsideClick, false);
-//     }
-//
-//     componentDidMount() {
-//         this.getVisibleItems();
-//         document.addEventListener('keydown', (e) => {
-//             if (e.key === "Escape") {
-//                 this.setState({
-//                     open: false,
-//                     filter: ''
-//                 });
-//                 this.setState({
-//                     currentlyHighlighted: '',
-//                 });
-//                 this.getVisibleItems();
-//                 if (ReactDom.findDOMNode(this).contains(e.target)) {
-//                     this.link.focus();
-//                 }
-//             }
-//         });
-//     };
-//
-//     componentWillUnmount() {
-//         document.removeEventListener('click', this.handleOutsideClick, false);
-//     };
-//
-//     toggle(value) {
-//         this.setState({
-//             open: value
-//         });
-//         if (value == false) {
-//             this.setState({
-//                 filter: ''
-//             });
-//         } else {
-//             if (this.state.selectedItem) {
-//                 this.setState({
-//                     currentlyHighlighted: this.state.selectedItem
-//                 });
-//             }
-//         }
-//     };
-//
-//     componentWillReceiveProps(nextProps) {
-//         if (nextProps.items !== this.state.items) {
-//             this.setState({items: nextProps.items}, () => {
-//                 this.getVisibleItems();
-//             });
-//         }
-//     }
-//
-//     submit(value) {
-//         this.props.onChange(value);
-//         this.setState({
-//             selectedItem: value,
-//             selectedItemLabel: this.props.items[value],
-//             open: false,
-//             currentlyHighlighted: ''
-//         }, () => {
-//             this.getVisibleItems();
-//         })
-//     }
-//
-//     getVisibleItems(isSearching) {
-//         var first = true;
-//         const visibleItems = [];
-//         Object.keys(this.props.items).forEach((key) => {
-//             if (
-//                 !this.state.filter
-//                 ||
-//                 this.props.items[key].toLowerCase().indexOf(this.state.filter.toLowerCase().trim())
-//                 !== -1
-//             ) {
-//                 var className = '';
-//                 if (isSearching) {
-//                     if (first == true) {
-//                         first = false;
-//                         className = 'item item-selected';
-//                         this.setState({
-//                             currentlyHighlighted: key
-//                         })
-//                     } else {
-//                         className = 'item'
-//                     }
-//                 } else {
-//                     className = (
-//                         (key == this.state.currentlyHighlighted && this.state.selectedItem == '')
-//                         ||
-//                         (key == this.state.selectedItem && this.state.currentlyHighlighted == '')
-//                         ||
-//                         (
-//                             this.state.currentlyHighlighted != ''
-//                             &&
-//                             this.state.selectedItem != ''
-//                             &&
-//                             key == this.state.currentlyHighlighted
-//                         )
-//                     )
-//                         ? 'item item-selected' : 'item';
-//                 }
-//                 visibleItems.push(
-//                     <div
-//                         onClick={() => {
-//                             this.submit(key);
-//                         }}
-//                         key={key}
-//                         className={className}
-//                     >{this.props.items[key]}
-//                     </div>
-//                 );
-//
-//             }
-//         });
-//
-//         if (visibleItems.length === 0) {
-//             visibleItems.push(
-//                 <div
-//                     key={null}
-//                     className="item item-no-results"
-//                 >No results found</div>
-//             );
-//             this.setState({
-//                 currentlyHighlighted: ''
-//             })
-//         }
-//
-//         this.setState({
-//             visibleItems: visibleItems
-//         })
-//     };
-//
-//     handleOutsideClick(e) {
-//         if (!ReactDom.findDOMNode(this).contains(e.target)) {
-//             this.setState({
-//                 open: false,
-//                 filter: ''
-//             }, () => {
-//                 this.getVisibleItems();
-//             })
-//         }
-//     };
-//
-//     findIndex(item) {
-//         return item.key == this.state.currentlyHighlighted;
-//     }
-//
 //     setNextHighlightedItem(direction = null, isSearching = false) {
 //         const currentIndex = this.state.visibleItems.findIndex(this.findIndex);
 //         let newIndex = 0;
@@ -248,93 +195,4 @@ export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
 //         });
 //     };
 //
-//     inputOnKeyDown(e) {
-//         if (e.key === 'ArrowDown') {
-//             this.setNextHighlightedItem('down');
-//         }
-//
-//         if (e.key === 'ArrowUp') {
-//             this.setNextHighlightedItem('up');
-//         }
-//     }
-//
-//     inputOnKeyPress(e) {
-//         if (e.key === 'Esc') {
-//             this.toggle(!this.state.open);
-//
-//         }
-//         if (e.key === 'Enter') {
-//             e.preventDefault();
-//             if (this.state.currentlyHighlighted != '') {
-//                 this.submit(this.state.currentlyHighlighted);
-//                 this.toggle(!this.state.open);
-//                 this.link.focus();
-//             }
-//             return false;
-//         }
-//     }
-//
-//     inputOnChange(e) {
-//         this.setState({
-//             filter: e.target.value
-//         }, () => {
-//             this.setNextHighlightedItem(null, true);
-//         });
-//     }
-//
-//     linkOnKeyDown(e) {
-//         if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-//             this.setState({
-//                 open: true
-//             })
-//         }
-//     }
-//
-//     render() {
-//         return (
-//
-//             <div className="select-react-redux-container">
-//                 <a href="#"
-//                    tabIndex={this.state.tabIndex}
-//                    onClick={() => {
-//                        this.toggle(!this.state.open)
-//                    }}
-//                    onKeyPress={() => {
-//                        this.setState({open: true})
-//                    }}
-//                    ref={(e) => {
-//                        this.link = e;
-//                    }}
-//                    onKeyDown={this.linkOnKeyDown}
-//                    className={this.state.open ? 'selected selected-open' : 'selected'}
-//                 >
-//                     <div
-//                         className={Object.keys(this.state.items).length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
-//                         {this.state.selectedItemLabel
-//                             ? this.state.selectedItemLabel
-//                             : Object.keys(this.state.items).length == 0 ? 'No options available' : 'Please select...'}
-//                     </div>
-//                 </a>
-//
-//                 <div className={this.state.open ? 'results-container open' : 'results-container' }>
-//
-//                     <div className="input-container">
-//                         <input
-//                             type="text"
-//                             autoCorrect="off"
-//                             autoCapitalize="off"
-//                             spellCheck="false"
-//                             autoComplete="off"
-//                             ref={search => search && search.focus()}
-//                             value={this.state.filter}
-//                             onKeyPress={this.inputOnKeyPress}
-//                             onChange={this.inputOnChange}
-//                             onKeyDown={this.inputOnKeyDown}
-//                         />
-//                     </div>
-//                     {this.state.visibleItems}
-//                 </div>
-//             </div>
-//         );
-//     }
-// }
+
