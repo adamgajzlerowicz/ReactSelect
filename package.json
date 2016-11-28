@@ -8,7 +8,8 @@
     "build:example": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js",
     "build:watch": "rimraf example/lib && NODE_ENV=production webpack --config webpack.example.config.js --watch",
     "build:prod": "rimraf lib && babel src/ -d lib/",
-    "pnp": "npm run build:prod && npm run build:example && git add -A && git commit -m \"push\" && git push  && npm version patch  && npm publish"
+    "pnp": "npm run build:prod && npm run build:example && git add -A && git commit -m \"push\" && git push  && npm version patch  && npm publish",
+    "cover": "istanbul cover _mocha -- test --compilers js:babel-register"
   },
   "main": "lib/index.js",
   "repository": {
@@ -43,7 +44,9 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",
     "ignore-styles": "^5.0.1",
+    "isparta": "^4.0.0",
     "jsdom": "^9.8.3",
+    "mocha": "^3.2.0",
     "radium": "^0.18.1",
     "react": "^15.4.0",
     "react-addons-test-utils": "^15.4.1",

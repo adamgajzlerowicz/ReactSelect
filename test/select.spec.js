@@ -1,8 +1,13 @@
 import React from 'react';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
-import {Select} from '../src';
+import {Select} from '../src/Select';
 import sinon from 'sinon';
+import jsdom from 'jsdom';
+
+const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
+global.document = doc;
+global.window = doc.defaultView;
 
 const items = {
     'item1': 'Mercedes Benz C40',
@@ -225,7 +230,6 @@ describe('<Select />', () => {
             };
             const wrapper = mount(<Select items={{}} onChange={onChange}/>);
             expect((wrapper.find('.top-bar').text())).to.equal('No options available');
-
         })
     });
 });
