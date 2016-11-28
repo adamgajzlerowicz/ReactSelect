@@ -26,7 +26,8 @@ describe('Reducers', () => {
         };
 
         freeze(items);
-        reducers(items, actions.SET_ITEMS)
+        console.log(reducers(items, actions.SET_ITEMS).items);
+
         // console.log(newState);
         // expect(reducers(items, actions.SET_ITEMS)).to.equal(newState);
     });
