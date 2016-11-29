@@ -15,44 +15,27 @@ function getVisibleItems(items, visibilityFilter) {
     return visibleItems;
 }
 
-const itemsReducer = (state = {}, action) => {
-
-    switch (action) {
-        case actions.SET_ITEMS:
-            return Object.assign({},
-                ...state,
-                {items: state}
-            )
-    }
-    return state;
-};
-
-const filterReducer = (state = {}, action) => {
-    return state;
-};
-const internalStateReducer = (state = {
+export const reducers = (state = {
+    // items: getVisibleItems(state.items, ''),
     selected: '',
     open: false,
-    selectedItem: '',
+    visibilityFilter: '',
+    selectedItem: selected,
     selectedItemLabel: '',
+    tabIndex: tabIndex,
     currentlyHighlighted: ''
 }, action) => {
+    switch (action.type) {
+        case 'SET_ITEMS':
+            return {
+                ...state,
+                items: action.payload
+            };
+        case 'SET_FILTER':
+            return {
+                ...state,
+                filter: action.payload
+            }
+    }
     return state;
 };
-
-export const reducers = (state = {}, action) => {
-    return {
-        items: itemsReducer(
-            state.items,
-            action
-        ),
-        visibilityFilter: filterReducer(
-            state.visibilityFilter,
-            action
-        ),
-        internalState: internalStateReducer(
-            state.internalState,
-            action
-        )
-    }
-}

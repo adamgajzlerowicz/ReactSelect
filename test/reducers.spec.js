@@ -1,97 +1,63 @@
 'use strict';
 import {reducers} from '../src/reducers';
 import actions from '../src/actions';
-import {expect} from 'chai';
+import expect, {createSpy, spyOn, isSpy} from 'expect'
 import freeze from 'deep-freeze';
-
 
 describe('Reducers', () => {
 
     it('sets initial items', () => {
         const items = {
             item1: 'blah',
-            item2: 'zumba',
-            item3: 'galoty',
-            item4: 'franciszek',
-            item5: 'pan zaloba'
-        };
-        const newState = {
-            items: {
-                item1: 'blah',
-                item2: 'zumba',
-                item3: 'galoty',
-                item4: 'franciszek',
-                item5: 'pan zaloba'
-            }
+            item2: 'foo',
+            item3: 'zork'
         };
 
+        const oldState = {
+            items: {}
+        };
+
+        const newState =
+            {
+                items: {
+                    item1: 'blah',
+                    item2: 'foo',
+                    item3: 'zork'
+                }
+            };
+
+        freeze(oldState);
         freeze(items);
-        console.log(reducers(items, actions.SET_ITEMS).items);
 
-        // console.log(newState);
-        // expect(reducers(items, actions.SET_ITEMS)).to.equal(newState);
+        expect(reducers(oldState, {
+            type: actions.SET_ITEMS, payload: items
+        })).toEqual(newState);
+
     });
 
-    // it('returns correctly filtered list of items', () => {
-    //     const state = {
-    //         item1: 'blah',
-    //         item2: 'zumba',
-    //         item3: 'galoty',
-    //         item4: 'franciszek',
-    //         item5: 'pan zaloba'
-    //     };
-    //
-    //     const filter = 'fra';
-    //
-    //     const newState = {
-    //         item1: 'blah',
-    //         item2: 'zumba',
-    //         item3: 'galoty',
-    //         item4: 'franciszek',
-    //         item5: 'pan zaloba'
-    //     };
-    //
-    //     freeze(state);
-    //
-    //     expect(reducers(state, actions.SET_)).to.equal(true);
-    //
-    //     const filter2 = 'fra';
-    //
-    //     const newState2 = {
-    //         item1: 'blah',
-    //         item2: 'zumba',
-    //         item3: 'galoty',
-    //         item4: 'franciszek',
-    //         item5: 'pan zaloba'
-    //     };
-    //
-    //     expect(true).to.equal(freeze(true));
-    //     const filter3 = 'fra';
-    //
-    //     const newState3 = {
-    //         item1: 'blah',
-    //         item2: 'zumba',
-    //         item3: 'galoty',
-    //         item4: 'franciszek',
-    //         item5: 'pan zaloba'
-    //     };
-    //
-    //
-    //     expect(true).to.equal(freeze(true));
-    //     const filter4 = 'fra';
-    //
-    //     const newState4 = {
-    //         item1: 'blah',
-    //         item2: 'zumba',
-    //         item3: 'galoty',
-    //         item4: 'franciszek',
-    //         item5: 'pan zaloba'
-    //     };
-    //
-    //     freeze(state);
-    //
-    //     expect(true).to.equal(freeze(true));
-    //
-    // })
+    it('sets filter', () => {
+        const filter = 'fff';
+
+        const oldState = {
+            filter: 'lkjsadlfkjsdlkf',
+            items: {foo: 'bar'}
+        };
+
+        const newState =
+            {
+                filter: 'fff',
+                items: {foo: 'bar'}
+            };
+
+        freeze(oldState);
+        freeze(filter);
+
+        expect(reducers(oldState, {
+            type: actions.SET_FILTER,
+            payload: filter
+        })).toEqual(newState);
+
+    });
+
 
 });
