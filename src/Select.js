@@ -122,9 +122,6 @@ const Presentation = ({...props}) => {
     );
 };
 
-const actions = {};
-
-
 export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
     const store = createStore(reducers);
 

@@ -58,6 +58,24 @@ describe('Reducers', () => {
         })).toEqual(newState);
 
     });
+    it('changes state of opened', () => {
 
+            const trueState = {
+                items: {foo: 'barr'},
+                open: true
+            };
 
+            const falseState = {
+                items: {foo: 'barr'},
+                open: false
+            };
+
+            freeze(trueState);
+            freeze(falseState);
+
+            expect(reducers(trueState, {type: actions.TOGGLE_OPEN})).toEqual(falseState);
+            expect(reducers(trueState, {type: actions.SET_OPEN, payload: false})).toEqual(falseState);
+            expect(reducers(falseState, {type: actions.SET_OPEN, payload: true})).toEqual(trueState);
+        }
+    )
 });

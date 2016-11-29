@@ -16,7 +16,7 @@ function getVisibleItems(items, visibilityFilter) {
 }
 
 export const reducers = (state = {
-    // items: getVisibleItems(state.items, ''),
+    items: {},
     selected: '',
     open: false,
     visibilityFilter: '',
@@ -35,7 +35,18 @@ export const reducers = (state = {
             return {
                 ...state,
                 filter: action.payload
-            }
+            };
+        case 'TOGGLE_OPEN':
+            return {
+                ...state,
+                open: !state.open
+            };
+        case 'SET_OPEN':
+            return {
+                ...state,
+                open: action.payload
+            };
+
     }
     return state;
 };
