@@ -7,6 +7,7 @@ import freeze from 'deep-freeze';
 describe('Reducers', () => {
 
     it('sets initial items', () => {
+
         const items = {
             item1: 'blah',
             item2: 'foo',
@@ -14,7 +15,8 @@ describe('Reducers', () => {
         };
 
         const oldState = {
-            items: {}
+            items: {},
+            visibleItems: {}
         };
 
         const newState =
@@ -23,7 +25,14 @@ describe('Reducers', () => {
                     item1: 'blah',
                     item2: 'foo',
                     item3: 'zork'
-                }
+                },
+                visibleItems: {
+                    item1: 'blah',
+                    item2: 'foo',
+                    item3: 'zork'
+                },
+                currentlyHighlighted: 'item1'
+
             };
 
         freeze(oldState);
@@ -35,18 +44,34 @@ describe('Reducers', () => {
 
     });
 
-    it('sets filter', () => {
-        const filter = 'fff';
+    it('sets filter and visible items', () => {
+
+        const filter = 'bla';
 
         const oldState = {
-            visibilityFilter: 'lkjsadlfkjsdlkf',
-            items: {foo: 'bar'}
+            visibilityFilter: 'bla',
+            items: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork',
+                item4: 'blahheh'
+            },
+            visibleItems: {}
         };
 
         const newState =
             {
-                visibilityFilter: 'fff',
-                items: {foo: 'bar'}
+                visibilityFilter: 'bla',
+                items: {
+                    item1: 'blah',
+                    item2: 'foo',
+                    item3: 'zork',
+                    item4: 'blahheh'
+                },
+                visibleItems: {
+                    item1: 'blah',
+                    item4: 'blahheh'
+                }
             };
 
         freeze(oldState);
@@ -100,9 +125,11 @@ describe('Reducers', () => {
         }
     );
 
+
     it('selects next item', () => {
+
         const oldState = {
-            items: {
+            visibleItems: {
                 item1: 'blah',
                 item2: 'foo',
                 item3: 'zork'
@@ -110,7 +137,7 @@ describe('Reducers', () => {
             currentlyHighlighted: 'item2'
         };
         const newState = {
-            items: {
+            visibleItems: {
                 item1: 'blah',
                 item2: 'foo',
                 item3: 'zork'
@@ -124,8 +151,82 @@ describe('Reducers', () => {
         expect(reducers(oldState, {type: actions.SET_NEXT_HIGHLIGHTED})).toEqual(newState);
     });
 
-    it('selects previous item');
-    it('sets currently highlighted');
-    it('sets selected item and its label');
+    it('selects previous item', () => {
+
+        const oldState = {
+            visibleItems: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork'
+            },
+            currentlyHighlighted: 'item2'
+        };
+        const newState = {
+            visibleItems: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork'
+            },
+            currentlyHighlighted: 'item1'
+        };
+
+        freeze(oldState);
+        freeze(newState);
+
+        expect(reducers(oldState, {type: actions.SET_PREV_HIGHLIGHTED})).toEqual(newState);
+    });
+    it('sets currently highlighted', () => {
+
+        const oldState = {
+            visibleItems: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork'
+            },
+            currentlyHighlighted: 'lkjasdflkj'
+        };
+        const newState = {
+            visibleItems: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork'
+            },
+            currentlyHighlighted: 'item3'
+        };
+
+        freeze(oldState);
+        freeze(newState);
+
+        expect(reducers(oldState, {type: actions.SET_HIGHLIGHTED, payload: 'item3'})).toEqual(newState);
+    });
+
+    it('sets selected item and the currently highlighted', () => {
+        const oldState = {
+            visibleItems: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork',
+                itemffff: 'lkjsdflkjslkj'
+            },
+            selected: '',
+            currentlyHighlighted: ''
+        };
+        const newState = {
+            visibleItems: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork',
+                itemffff: 'lkjsdflkjslkj'
+            },
+            selected: 'itemffff',
+            currentlyHighlighted: 'itemffff'
+        };
+        const key = 'itemffff';
+
+        freeze(oldState);
+        freeze(newState);
+
+        expect(reducers(oldState, {type: actions.SET_SELECTED, payload: key})).toEqual(newState);
+    });
 
 });
