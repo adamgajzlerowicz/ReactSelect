@@ -39,13 +39,13 @@ describe('Reducers', () => {
         const filter = 'fff';
 
         const oldState = {
-            filter: 'lkjsadlfkjsdlkf',
+            visibilityFilter: 'lkjsadlfkjsdlkf',
             items: {foo: 'bar'}
         };
 
         const newState =
             {
-                filter: 'fff',
+                visibilityFilter: 'fff',
                 items: {foo: 'bar'}
             };
 
@@ -77,5 +77,55 @@ describe('Reducers', () => {
             expect(reducers(trueState, {type: actions.SET_OPEN, payload: false})).toEqual(falseState);
             expect(reducers(falseState, {type: actions.SET_OPEN, payload: true})).toEqual(trueState);
         }
-    )
+    );
+
+    it('changes state of opened', () => {
+
+            const trueState = {
+                items: {foo: 'barr'},
+                open: true
+            };
+
+            const falseState = {
+                items: {foo: 'barr'},
+                open: false
+            };
+
+            freeze(trueState);
+            freeze(falseState);
+
+            expect(reducers(trueState, {type: actions.TOGGLE_OPEN})).toEqual(falseState);
+            expect(reducers(trueState, {type: actions.SET_OPEN, payload: false})).toEqual(falseState);
+            expect(reducers(falseState, {type: actions.SET_OPEN, payload: true})).toEqual(trueState);
+        }
+    );
+
+    it('selects next item', () => {
+        const oldState = {
+            items: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork'
+            },
+            currentlyHighlighted: 'item2'
+        };
+        const newState = {
+            items: {
+                item1: 'blah',
+                item2: 'foo',
+                item3: 'zork'
+            },
+            currentlyHighlighted: 'item3'
+        };
+
+        freeze(oldState);
+        freeze(newState);
+
+        expect(reducers(oldState, {type: actions.SET_NEXT_HIGHLIGHTED})).toEqual(newState);
+    });
+
+    it('selects previous item');
+    it('sets currently highlighted');
+    it('sets selected item and its label');
+
 });

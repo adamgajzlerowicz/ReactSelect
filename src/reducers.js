@@ -22,7 +22,6 @@ export const reducers = (state = {
     visibilityFilter: '',
     selectedItem: selected,
     selectedItemLabel: '',
-    tabIndex: tabIndex,
     currentlyHighlighted: ''
 }, action) => {
     switch (action.type) {
@@ -34,7 +33,7 @@ export const reducers = (state = {
         case 'SET_FILTER':
             return {
                 ...state,
-                filter: action.payload
+                visibilityFilter: action.payload
             };
         case 'TOGGLE_OPEN':
             return {
