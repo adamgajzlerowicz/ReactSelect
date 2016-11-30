@@ -4,7 +4,6 @@ import {Provider, connect} from 'react-redux';
 import {createStore} from 'redux';
 import actions from './actions';
 import {reducers} from './reducers';
-const ReactDom = require('react-dom');
 
 
 const NoItems = () => {
@@ -17,18 +16,8 @@ const NoItems = () => {
 };
 
 const Presentation = ({...props}) => {
-    document.addEventListener('click', (e) => {
-        console.log(e);
-        if (!ReactDom.findDOMNode(this).contains(e.target)) {
-            console.log('needs to close');
-            // this.setState({
-            //     open: false,
-            //     filter: ''
-            // }, () => {
-            //     this.getVisibleItems();
-            // })
-        }
-    }, false);
+    console.log(props.currentlyHighlighted);
+
     const visibleItems = Object.keys(props.visibleItems).map((item) => {
         return (
             <div
@@ -54,7 +43,21 @@ const Presentation = ({...props}) => {
     });
 
     return (
-        <div className="select-react-redux-container">
+        <div
+            className="select-react-redux-container"
+            ref={(input) => {
+                if (props.initialRender && input) {
+                    props.initialRenderFalse();
+                    document.addEventListener('click', function (event) {
+                        if (!input.contains(event.target)) {
+                            props.refresh();
+                        }
+                    });
+
+                }
+
+            }}>
+
             <a href="#"
                tabIndex={props.tabIndex}
                onClick={props.topBarOnClick}
@@ -133,7 +136,7 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
     const mapDispatchToProps = (dispatch) => {
         return {
             submit: (item) => {
-                if(item.selected){
+                if (item.selected) {
                     dispatch({type: actions.SET_SELECTED, payload: item});
                     dispatch({type: actions.SET_OPEN, payload: false});
                     onChange(item.selected);
@@ -168,6 +171,13 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
             },
             topBarPress: () => {
                 dispatch({type: actions.SET_OPEN, payload: true})
+            },
+            initialRenderFalse: () => {
+                dispatch({type: actions.SET_INITIAL_RENDER_FALSE});
+            },
+            refresh: () => {
+                dispatch({type: actions.SET_OPEN, payload: false});
+                dispatch({type: actions.SET_FILTER, payload: ''});
             }
         }
     };

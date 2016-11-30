@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 import {Select} from '../src';
 
 const items = {
-    'item1': 'Mercedes Benz C40',
+    'item1': 'Mercedes-benz GLE',
     'item2': 'Mazda 6',
     'item3': 'Mazda 3',
     'item4': 'Rover Discovery Sport'
@@ -15,7 +15,7 @@ const onChange = (val) => {
 
 render((
     <div>
-        <Select items={items} onChange={onChange} tabIndex="2"/>
+        <Select items={items} onChange={onChange} />
     </div>
 ), document.getElementById('app'));
 

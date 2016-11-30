@@ -31,7 +31,7 @@ describe('Reducers', () => {
                     item2: 'foo',
                     item3: 'zork'
                 },
-                currentlyHighlighted: 'item1'
+                initialRender: true
 
             };
 
@@ -88,33 +88,16 @@ describe('Reducers', () => {
 
             const trueState = {
                 items: {foo: 'barr'},
-                open: true
+                visibleItems:{foo: 'barr'},
+                open: true,
+                currentlyHighlighted: 'foo'
             };
 
             const falseState = {
                 items: {foo: 'barr'},
-                open: false
-            };
-
-            freeze(trueState);
-            freeze(falseState);
-
-            expect(reducers(trueState, {type: actions.TOGGLE_OPEN})).toEqual(falseState);
-            expect(reducers(trueState, {type: actions.SET_OPEN, payload: false})).toEqual(falseState);
-            expect(reducers(falseState, {type: actions.SET_OPEN, payload: true})).toEqual(trueState);
-        }
-    );
-
-    it('changes state of opened', () => {
-
-            const trueState = {
-                items: {foo: 'barr'},
-                open: true
-            };
-
-            const falseState = {
-                items: {foo: 'barr'},
-                open: false
+                visibleItems:{foo: 'barr'},
+                open: false,
+                currentlyHighlighted: ''
             };
 
             freeze(trueState);
@@ -232,7 +215,7 @@ describe('Reducers', () => {
         expect(reducers(oldState, {type: actions.SET_SELECTED, payload: key})).toEqual(newState);
     });
 
-    it('sets the tab index value',()=>{
+    it('sets the tab index value', () => {
         const oldState = {
             tabIndex: null
         };
@@ -243,6 +226,20 @@ describe('Reducers', () => {
         freeze(newState);
 
         expect(reducers(oldState, {type: actions.SET_TABINDEX, payload: 2})).toEqual(newState);
+    });
+
+    it('sets initial render to false', () => {
+
+        const oldState = {
+            initialRender: true
+        };
+        const newState = {
+            initialRender: false
+        };
+
+        freeze(oldState);
+        freeze(newState);
+        expect(reducers(oldState, {type: actions.SET_INITIAL_RENDER_FALSE})).toEqual(newState);
     })
 
 });

@@ -5,7 +5,7 @@ export const reducers = (state = {}, action) => {
                 ...state,
                 items: action.payload,
                 visibleItems: action.payload,
-                currentlyHighlighted: Object.keys(action.payload)[0] || ''
+                initialRender: true
             };
         }
         case 'SET_FILTER': {
@@ -32,14 +32,16 @@ export const reducers = (state = {}, action) => {
         case 'TOGGLE_OPEN': {
             return {
                 ...state,
-                open: !state.open
+                open: !state.open,
+                currentlyHighlighted: !state.open ? Object.keys(state.visibleItems)[0] || '' : ''
             };
         }
 
         case 'SET_OPEN': {
             return {
                 ...state,
-                open: action.payload
+                open: action.payload,
+                currentlyHighlighted: action.payload ? Object.keys(state.visibleItems)[0] || '' : ''
             };
         }
 
@@ -92,6 +94,12 @@ export const reducers = (state = {}, action) => {
             return {
                 ...state,
                 tabIndex: action.payload
+            }
+        }
+        case 'SET_INITIAL_RENDER_FALSE' : {
+            return {
+                ...state,
+                initialRender: false
             }
         }
     }
