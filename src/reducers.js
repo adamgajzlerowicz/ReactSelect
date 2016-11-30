@@ -12,9 +12,10 @@ export const reducers = (state = {}, action) => {
             let visibleItems = {};
             Object.keys(state.items).map((key) => {
                 if (
-                    !state.visibilityFilter
+                    !action.payload
                     ||
-                    state.items[key].toLowerCase().indexOf(state.visibilityFilter.toLowerCase().trim())
+                    state.items[key].toLowerCase().indexOf(action.payload.toLowerCase().trim()
+                    )
                     !== -1
                 ) {
                     visibleItems[key] = state.items[key];
@@ -39,6 +40,7 @@ export const reducers = (state = {}, action) => {
                 open: action.payload
             };
         }
+
         case 'SET_NEXT_HIGHLIGHTED': {
             let keys = Object.keys(state.visibleItems);
             let currentIndex = keys.indexOf(state.currentlyHighlighted);
@@ -74,11 +76,20 @@ export const reducers = (state = {}, action) => {
                 currentlyHighlighted: action.payload
             }
         }
+
         case 'SET_SELECTED': {
             return {
                 ...state,
-                currentlyHighlighted: action.payload,
-                selected: action.payload
+                currentlyHighlighted: action.payload.selected,
+                selected: action.payload.selected,
+                selectedItemLabel: action.payload.selectedItemLabel
+            }
+        }
+
+        case 'SET_TABINDEX': {
+            return {
+                ...state,
+                tabIndex: action.payload
             }
         }
     }

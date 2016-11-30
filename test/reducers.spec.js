@@ -209,6 +209,7 @@ describe('Reducers', () => {
                 itemffff: 'lkjsdflkjslkj'
             },
             selected: '',
+            selectedItemLabel: '',
             currentlyHighlighted: ''
         };
         const newState = {
@@ -219,14 +220,28 @@ describe('Reducers', () => {
                 itemffff: 'lkjsdflkjslkj'
             },
             selected: 'itemffff',
+            selectedItemLabel: 'lkjsdflkjslkj',
             currentlyHighlighted: 'itemffff'
         };
-        const key = 'itemffff';
+        const key = {selected: 'itemffff', selectedItemLabel: 'lkjsdflkjslkj'};
 
         freeze(oldState);
         freeze(newState);
 
         expect(reducers(oldState, {type: actions.SET_SELECTED, payload: key})).toEqual(newState);
     });
+
+    it('sets the tab index value',()=>{
+        const oldState = {
+            tabIndex: null
+        };
+        const newState = {
+            tabIndex: 2
+        };
+        freeze(oldState);
+        freeze(newState);
+
+        expect(reducers(oldState, {type: actions.SET_TABINDEX, payload: 2})).toEqual(newState);
+    })
 
 });
