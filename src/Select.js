@@ -84,7 +84,8 @@ const Presentation = ({...props}) => {
             <a href="#"
                tabIndex={props.tabIndex}
                onClick={() => {
-                   this.toggle(!props.open)
+                   console.log('lkjsdf');
+                   props.topBarOnClick
                }}
                onKeyPress={() => {
                    this.setState({open: true})
@@ -124,12 +125,12 @@ const Presentation = ({...props}) => {
 
 export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
     const store = createStore(reducers);
-
+    store.dispatch({type: actions.SET_ITEMS, payload: items})
     const mapStateToProps = (state = {}) => {
         return state;
     };
 
-    const mapDispatchToProps = () => {
+    const mapDispatchToProps = (dispatch) => {
         return {
             submit: () => {
                 onClick()
@@ -159,6 +160,9 @@ export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
                 if (e.key === 'ArrowUp') {
                     console.log('arrow up');
                 }
+            },
+            topBarOnClick: () => {
+                dispatch({type: actions.SET_OPEN})
             }
         }
     };
@@ -174,22 +178,3 @@ export const Select = ({items, selected = '', tabIndex = null, onClick}) => {
         </Provider>
     )
 };
-
-//     setNextHighlightedItem(direction = null, isSearching = false) {
-//         const currentIndex = this.state.visibleItems.findIndex(this.findIndex);
-//         let newIndex = 0;
-//         if (direction == 'down' && currentIndex < this.state.visibleItems.length - 1 && currentIndex != -1) {
-//             newIndex = currentIndex + 1;
-//         } else if (direction == 'up' && currentIndex > 0) {
-//             newIndex = currentIndex - 1;
-//         } else if (!direction) {
-//             newIndex = 0;
-//         }
-//         this.setState({
-//             currentlyHighlighted: this.state.visibleItems[newIndex].key
-//         }, () => {
-//             this.getVisibleItems(isSearching);
-//         });
-//     };
-//
-
