@@ -21,10 +21,12 @@ export const reducers = (state = {}, action) => {
                     visibleItems[key] = state.items[key];
                 }
             });
+
             return {
                 ...state,
                 visibilityFilter: action.payload,
-                visibleItems: visibleItems
+                visibleItems: visibleItems,
+                currentlyHighlighted: Object.keys(visibleItems)[0] || ''
             };
         }
         case 'TOGGLE_OPEN': {

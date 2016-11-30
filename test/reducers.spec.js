@@ -71,7 +71,8 @@ describe('Reducers', () => {
                 visibleItems: {
                     item1: 'blah',
                     item4: 'blahheh'
-                }
+                },
+                currentlyHighlighted: 'item1'
             };
 
         freeze(oldState);

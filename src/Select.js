@@ -16,8 +16,9 @@ const NoItems = () => {
     );
 };
 
-const addListeners = ({}) => {
-    document.addEventListener('click', () => {
+const Presentation = ({...props}) => {
+    document.addEventListener('click', (e) => {
+        console.log(e);
         if (!ReactDom.findDOMNode(this).contains(e.target)) {
             console.log('needs to close');
             // this.setState({
@@ -28,8 +29,6 @@ const addListeners = ({}) => {
             // })
         }
     }, false);
-};
-const Presentation = ({...props}) => {
     const visibleItems = Object.keys(props.visibleItems).map((item) => {
         return (
             <div
@@ -53,6 +52,7 @@ const Presentation = ({...props}) => {
         )
 
     });
+
     return (
         <div className="select-react-redux-container">
             <a href="#"
@@ -61,13 +61,18 @@ const Presentation = ({...props}) => {
                onKeyPress={props.topBarPress}
                onKeyDown={props.linkOnKeyDown}
                className={props.open ? 'selected selected-open' : 'selected'}
-
+               ref={function (input) {
+                   if (input != null) {
+                       input.focus();
+                   }
+               }}
             >
                 <div
-                    className={props.items.length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
-                    {props.selectedItemLabel
-                        ? props.selectedItemLabel
-                        : props.items.length == 0 ? 'No options available' : 'Please select...'}
+                    className={Object.keys(props.items).length == 0 ? 'top-bar top-bar-empty' : 'top-bar'}>
+                    { Object.keys(props.items).length == 0 ? 'No options available' :
+                        props.selectedItemLabel
+                            ? props.selectedItemLabel
+                            : 'Please select...'}
                 </div>
             </a>
 
@@ -128,11 +133,17 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
     const mapDispatchToProps = (dispatch) => {
         return {
             submit: (item) => {
-                dispatch({type: actions.SET_SELECTED, payload: item});
-                onChange(item.selected);
+                if(item.selected){
+                    dispatch({type: actions.SET_SELECTED, payload: item});
+                    dispatch({type: actions.SET_OPEN, payload: false});
+                    onChange(item.selected);
+                }
             },
-            linkOnKeyDown: () => {
-                dispatch({type: actions.SET_OPEN, payload: true})
+            linkOnKeyDown: (e) => {
+                if (e.key != 'Escape') {
+                    dispatch({type: actions.SET_OPEN, payload: true});
+                    dispatch({type: actions.SET_FILTER, payload: ''});
+                }
             },
 
             inputOnChange: (e) => {
@@ -148,11 +159,12 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
                 }
 
                 if (e.key === 'Escape') {
-                    dispatch({type: actions.SET_OPEN, payload: false})
+                    dispatch({type: actions.SET_OPEN, payload: false});
+                    dispatch({type: actions.SET_FILTER, payload: ''});
                 }
             },
             topBarOnClick: () => {
-                dispatch({type: actions.TOGGLE_OPEN})
+                dispatch({type: actions.TOGGLE_OPEN});
             },
             topBarPress: () => {
                 dispatch({type: actions.SET_OPEN, payload: true})
