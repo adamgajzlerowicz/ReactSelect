@@ -3,7 +3,8 @@ export const reducers = (state = {}, action) => {
         case '@@INIT': {
             return {
                 open: false,
-                initialRender: true
+                initialRender: true,
+                visibilityFilter: ''
             }
         }
         case 'SET_ITEMS': {

@@ -16,7 +16,7 @@ const NoItems = () => {
 };
 
 const Presentation = ({...props}) => {
-
+    let topBar;
     const visibleItems = Object.keys(props.visibleItems).map((item) => {
         return (
             <div
@@ -24,7 +24,8 @@ const Presentation = ({...props}) => {
                     props.submit({
                         selected: item,
                         selectedItemLabel: props.items[item]
-                    })
+                    });
+                    focus();
                 }}
                 key={item}
                 className={
@@ -40,7 +41,10 @@ const Presentation = ({...props}) => {
         )
 
     });
-
+    const focus = () => {
+        if (topBar)
+            topBar.focus();
+    };
     return (
         <div
             className="select-react-redux-container"
@@ -56,16 +60,20 @@ const Presentation = ({...props}) => {
                 }
 
             }}>
-
             <a href="#"
                tabIndex={props.tabIndex}
                onClick={props.topBarOnClick}
-               onKeyPress={props.topBarPress}
-               onKeyDown={props.linkOnKeyDown}
+               onKeyPress={props.linkOnKeyPress}
+               onKeyDown={e => {
+                   if (e.key.indexOf('Arrow') == 0) {
+                       props.linkOnKeyPress(e)
+                   }
+               }}
                className={props.open ? 'selected selected-open' : 'selected'}
                ref={function (input) {
-                   if (input != null) {
-                       input.focus();
+                   if (input && props.open) {
+                       topBar = input;
+                       focus();
                    }
                }}
             >
@@ -79,7 +87,6 @@ const Presentation = ({...props}) => {
             </a>
 
             <div className={props.open ? 'results-container open' : 'results-container' }>
-
                 <div className="input-container">
                     <input
                         type="text"
@@ -87,18 +94,28 @@ const Presentation = ({...props}) => {
                         autoCapitalize="off"
                         spellCheck="false"
                         autoComplete="off"
-                        ref={search => search && search.focus()}
-                        value={props.filter}
+                        ref={(item) => {
+                            if (item && props.open) {
+                                item.focus()
+                            }
+                        }}
+                        value={props.visibilityFilter}
                         onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
+                            if (e.key === 'Enter' && props.open) {
                                 props.submit({
                                     selected: props.currentlyHighlighted,
                                     selectedItemLabel: props.items[props.currentlyHighlighted]
                                 });
+                                focus();
                             }
                         }}
                         onChange={props.inputOnChange}
-                        onKeyDown={props.inputOnKeyDown}
+                        onKeyDown={(e) => {
+                            props.inputOnKeyDown(e);
+                            if (e.key == 'Escape') {
+                                focus();
+                            }
+                        }}
                     />
                 </div>
                 {visibleItems.length > 0 ? visibleItems : <NoItems/>}
@@ -138,10 +155,11 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
                 if (item.selected) {
                     dispatch({type: actions.SET_SELECTED, payload: item});
                     dispatch({type: actions.SET_OPEN, payload: false});
+                    dispatch({type: actions.SET_FILTER, payload: ''});
                     onChange(item.selected);
                 }
             },
-            linkOnKeyDown: (e) => {
+            linkOnKeyPress: (e) => {
                 if (e.key != 'Escape') {
                     dispatch({type: actions.SET_OPEN, payload: true});
                     dispatch({type: actions.SET_FILTER, payload: ''});
@@ -168,9 +186,7 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
             topBarOnClick: () => {
                 dispatch({type: actions.TOGGLE_OPEN});
             },
-            topBarPress: () => {
-                dispatch({type: actions.SET_OPEN, payload: true})
-            },
+
             initialRenderFalse: () => {
                 dispatch({type: actions.SET_INITIAL_RENDER_FALSE});
             },
