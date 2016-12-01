@@ -105,91 +105,99 @@ describe('<Select />', () => {
         })
     });
 
-    describe('Highlight items', () => {
-
-        it('highlights with arrow down', () => {
-            const onChange = () => {
-            };
-            const wrapper = mount(<Select items={items} onChange={onChange}/>);
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item1');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item4');
-        });
-
-        it('highlights with arrow up', () => {
-            const onChange = () => {
-            };
-            const wrapper = mount(<Select items={items} onChange={onChange}/>);
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item1');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
-        });
-
-        it('highlights with search', () => {
-            const onChange = () => {
-            };
-            const wrapper = mount(<Select items={items} onChange={onChange}/>);
-            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
-        });
-
-        it('highlights items with arrows on filtered list', () => {
-            const onChange = () => {
-            };
-            const wrapper = mount(<Select items={items} onChange={onChange}/>);
-            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowDown'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            wrapper.find('input').simulate("keyDown", {
-                key: 'ArrowUp'
-            });
-            expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
-        });
-    });
+    // describe('Highlight items', () => {
+    //
+    //     it('highlights with arrow down'
+    //     //     , () => {
+    //     //     const onChange = () => {
+    //     //     };
+    //     //     const wrapper = mount(<Select items={items} onChange={onChange}/>);
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item1');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item4');
+    //     // }
+    //     );
+    //
+    //     it('highlights with arrow up'
+    //     //     , () => {
+    //     //     const onChange = () => {
+    //     //     };
+    //     //     const wrapper = mount(<Select items={items} onChange={onChange}/>);
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item1');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+    //     // }
+    //     );
+    //
+    //     it('highlights with search'
+    //     //     , () => {
+    //     //     const onChange = () => {
+    //     //     };
+    //     //     const wrapper = mount(<Select items={items} onChange={onChange}/>);
+    //     //     wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+    //     // }
+    //     );
+    //
+    //     it('highlights items with arrows on filtered list'
+    //     //     , () => {
+    //     //     const onChange = () => {
+    //     //     };
+    //     //     const wrapper = mount(<Select items={items} onChange={onChange}/>);
+    //     //     wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowDown'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item3');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     wrapper.find('input').simulate("keyDown", {
+    //     //         key: 'ArrowUp'
+    //     //     });
+    //     //     expect(wrapper.state('currentlyHighlighted')).to.equal('item2');
+    //     // }
+    //     );
+    // });
 
     describe('Triggers callback with a right value', () => {
         it('triggers with click', () => {
@@ -203,6 +211,8 @@ describe('<Select />', () => {
         it('triggers with enter', () => {
             const onChange = sinon.spy();
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('.selected').simulate("click");
+            wrapper.find('.selected').simulate('change', {target: {value: 'ff'}});
             wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
             wrapper.find('input').simulate("keyPress", {
                 key: 'Enter'
@@ -219,10 +229,12 @@ describe('<Select />', () => {
             };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            wrapper.find('.selected').simulate("click");
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
             wrapper.find('input').simulate("keyPress", {
                 key: 'Enter'
             });
-            expect((wrapper.find('.top-bar').text())).to.equal('Mazda 6');
+                expect((wrapper.find('.top-bar').text())).to.equal('Mazda 6');
         });
 
         it('knows about no results items supplied', () => {
