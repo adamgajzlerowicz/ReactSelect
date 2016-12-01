@@ -1,6 +1,6 @@
 export const reducers = (state = {}, action) => {
     switch (action.type) {
-        case '@@INIT': {
+        case '@@redux/INIT': {
             return {
                 open: false,
                 initialRender: true,
