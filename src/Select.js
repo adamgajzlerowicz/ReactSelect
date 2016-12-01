@@ -7,6 +7,7 @@ import {reducers} from './reducers';
 
 
 const NoItems = () => {
+
     return (
         <div
             key={null}
