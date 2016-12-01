@@ -125,6 +125,8 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
 
     const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
+    store.dispatch({type: '@@redux/INIT'});
+
     window.store = store;
 
     store.dispatch({type: actions.SET_ITEMS, payload: items});
@@ -200,8 +202,6 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
     )(Presentation);
 
     return (
-        <Provider store={store}>
-            <SelectWithStore />
-        </Provider>
+        <SelectWithStore store={store}/>
     )
 };
