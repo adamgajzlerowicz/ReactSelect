@@ -29,11 +29,7 @@ const Presentation = ({...props}) => {
                 }}
                 key={item}
                 className={
-                    (item == props.currentlyHighlighted)
-                    ||
-                    (item == props.selectedItem)
-                        ?
-                        'item item-selected' : 'item'
+                    (item == props.currentlyHighlighted) ? 'item item-selected' : 'item'
                 }
             >
                 {props.items[item]}
