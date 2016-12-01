@@ -211,6 +211,8 @@ describe('<Select />', () => {
         it('triggers with enter', () => {
             const onChange = sinon.spy();
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
+            wrapper.find('.selected').simulate("click");
+            wrapper.find('.selected').simulate('change', {target: {value: 'ff'}});
             wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
             wrapper.find('input').simulate("keyPress", {
                 key: 'Enter'
@@ -227,10 +229,12 @@ describe('<Select />', () => {
             };
             const wrapper = mount(<Select items={items} onChange={onChange}/>);
             wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
+            wrapper.find('.selected').simulate("click");
+            wrapper.find('input').simulate('change', {target: {value: 'Maz'}});
             wrapper.find('input').simulate("keyPress", {
                 key: 'Enter'
             });
-            expect((wrapper.find('.top-bar').text())).to.equal('Mazda 6');
+                expect((wrapper.find('.top-bar').text())).to.equal('Mazda 6');
         });
 
         it('knows about no results items supplied', () => {

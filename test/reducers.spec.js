@@ -30,9 +30,7 @@ describe('Reducers', () => {
                     item1: 'blah',
                     item2: 'foo',
                     item3: 'zork'
-                },
-                initialRender: true
-
+                }
             };
 
         freeze(oldState);
@@ -56,6 +54,7 @@ describe('Reducers', () => {
                 item3: 'zork',
                 item4: 'blahheh'
             },
+            open: true,
             visibleItems: {}
         };
 
@@ -72,6 +71,7 @@ describe('Reducers', () => {
                     item1: 'blah',
                     item4: 'blahheh'
                 },
+                open: true,
                 currentlyHighlighted: 'item1'
             };
 

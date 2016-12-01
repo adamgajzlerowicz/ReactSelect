@@ -1,11 +1,17 @@
 export const reducers = (state = {}, action) => {
     switch (action.type) {
+        case '@@INIT': {
+            return {
+                open: false,
+                initialRender: true
+            }
+        }
         case 'SET_ITEMS': {
             return {
                 ...state,
                 items: action.payload,
-                visibleItems: action.payload,
-                initialRender: true
+                visibleItems: action.payload
+
             };
         }
         case 'SET_FILTER': {
@@ -26,7 +32,7 @@ export const reducers = (state = {}, action) => {
                 ...state,
                 visibilityFilter: action.payload,
                 visibleItems: visibleItems,
-                currentlyHighlighted: Object.keys(visibleItems)[0] || ''
+                currentlyHighlighted: state.open ? Object.keys(visibleItems)[0] || '' : ''
             };
         }
         case 'TOGGLE_OPEN': {
