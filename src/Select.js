@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Provider, connect} from 'react-redux';
+import {connect} from 'react-redux';
 import {createStore} from 'redux';
 import actions from './actions';
 import {reducers} from './reducers';
