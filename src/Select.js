@@ -122,7 +122,7 @@ const Presentation = ({...props}) => {
     );
 };
 
-export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
+const Stateless = ({items, selected = null, tabIndex = null, onChange}) => {
 
     const store = createStore(reducers);
 
@@ -206,3 +206,15 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
         <SelectWithStore store={store}/>
     )
 };
+
+
+export class Select extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <Stateless {...this.props} />
+        )
+    }
+}
