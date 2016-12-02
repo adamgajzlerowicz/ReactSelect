@@ -212,6 +212,7 @@ export class Select extends React.Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         return (
             <Stateless {...this.props} />
