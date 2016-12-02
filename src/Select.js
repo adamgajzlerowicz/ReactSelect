@@ -123,7 +123,7 @@ const Presentation = ({...props}) => {
 
 export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
 
-    const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    const store = createStore(reducers);
 
     store.dispatch({type: '@@redux/INIT'});
 
@@ -200,6 +200,16 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
         mapStateToProps,
         mapDispatchToProps
     )(Presentation);
+
+    const render = (store) => {
+        return (
+            <SelectWithStore store={store}/>
+        )
+    };
+
+    store.subscribe(() => {
+        render(store);
+    });
 
     return (
         <SelectWithStore store={store}/>
