@@ -61,7 +61,7 @@ const Presentation = ({...props}) => {
                tabIndex={props.tabIndex}
                onClick={props.topBarOnClick}
                onKeyPress={props.linkOnKeyPress}
-               autoFocus={true}
+               autoFocus
                onKeyDown={e => {
                    if (e.key.indexOf('Arrow') == 0) {
                        props.linkOnKeyPress(e)
