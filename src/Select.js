@@ -135,7 +135,7 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
         store.dispatch({
             type: actions.SET_SELECTED, payload: {
                 selected: selected,
-                selectedItemLabel: items.selected
+                selectedItemLabel: items[selected]
             }
         });
     }

@@ -16,7 +16,7 @@ const onChange = (val) => {
 render((
     <div>
         <Select items={items} onChange={onChange} tabIndex="1"/>
-        <Select items={items} onChange={onChange} tabIndex="2"/>
+        <Select items={items} onChange={onChange} tabIndex="2" selected={'item3'}/>
     </div>
 ), document.getElementById('app'));
 
