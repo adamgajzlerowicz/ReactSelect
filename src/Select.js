@@ -39,8 +39,10 @@ const Presentation = ({...props}) => {
 
     });
     const focus = () => {
-        if (topBar)
+        if (topBar) {
             topBar.focus();
+            console.log('focusing');
+        }
     };
     return (
         <div
