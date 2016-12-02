@@ -116,6 +116,7 @@ const Presentation = ({...props}) => {
                     />
                 </div>
                 {visibleItems.length > 0 ? visibleItems : <NoItems/>}
+                {focus()}
             </div>
         </div>
     );
