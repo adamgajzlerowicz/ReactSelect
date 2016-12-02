@@ -211,7 +211,5 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
         render(store);
     });
 
-    return (
-        <SelectWithStore store={store}/>
-    )
+    render();
 };
