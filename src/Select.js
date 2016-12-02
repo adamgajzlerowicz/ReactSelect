@@ -39,9 +39,8 @@ const Presentation = ({...props}) => {
 
     });
     const focus = () => {
-        if (topBar) {
+        if (topBar)
             topBar.focus();
-        }
     };
     return (
         <div
@@ -69,7 +68,7 @@ const Presentation = ({...props}) => {
                }}
                className={props.open ? 'selected selected-open' : 'selected'}
                ref={function (input) {
-                   if (input) {
+                   if (input && props.open) {
                        topBar = input;
                        focus();
                    }
@@ -117,7 +116,6 @@ const Presentation = ({...props}) => {
                     />
                 </div>
                 {visibleItems.length > 0 ? visibleItems : <NoItems/>}
-                {focus()}
             </div>
         </div>
     );
