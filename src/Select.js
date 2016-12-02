@@ -202,6 +202,7 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
     )(Presentation);
 
     const render = (store) => {
+        console.log('render');
         return (
             <SelectWithStore store={store}/>
         )
