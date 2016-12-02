@@ -201,17 +201,6 @@ export const Select = ({items, selected = null, tabIndex = null, onChange}) => {
         mapDispatchToProps
     )(Presentation);
 
-    const render = (store) => {
-        console.log('render');
-        return (
-            <SelectWithStore store={store}/>
-        )
-    };
-
-    store.subscribe(() => {
-        render(store);
-    });
-
     return (
         <SelectWithStore store={store}/>
     )
