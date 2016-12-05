@@ -105,6 +105,7 @@ const Presentation = ({...props}) => {
                                     selectedItemLabel: props.items[props.currentlyHighlighted]
                                 });
                                 focus();
+                                e.preventDefault();
                                 return false;
                             }
                         }}
@@ -215,8 +216,8 @@ export class Select extends React.Component {
     }
 
 
-    shouldComponentUpdate() {
-        return false;
+    shouldComponentUpdate(newProps) {
+        return newProps.items != this.props.items;
     }
 
 
