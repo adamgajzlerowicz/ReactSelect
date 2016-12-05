@@ -1,6 +1,6 @@
 {
   "name": "select-react-redux",
-  "version": "1.6.17",
+  "version": "1.6.18",
   "description": "A searchable select box, similar to select2.",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --config webpack.dev.config.js",
