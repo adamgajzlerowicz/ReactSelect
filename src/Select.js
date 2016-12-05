@@ -217,7 +217,7 @@ export class Select extends React.Component {
 
 
     shouldComponentUpdate(newProps) {
-        return newProps.items != this.props.items;
+        return JSON.stringify(newProps.items) != JSON.stringify(this.props.items);
     }
 
 
