@@ -213,6 +213,17 @@ export class Select extends React.Component {
         super(props);
     }
 
+
+    shouldComponentUpdate() {
+        console.log('should component update');
+        return true;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('fdf');
+        console.log(nextProps);
+    }
+
     render() {
         return (
             <Stateless {...this.props} />

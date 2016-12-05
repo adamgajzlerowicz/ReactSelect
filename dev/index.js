@@ -2,6 +2,9 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Select} from '../src';
 import {createStore, applyMiddleware} from 'redux';
+import {connect} from 'react-redux';
+import {Provider} from 'react-redux';
+
 
 const items = {
     'item1': 'Mercedes-benz GLE',
@@ -13,31 +16,33 @@ const items = {
 
 
 const reducer = (state = {item: ''}, action) => {
-    console.log(action)
-    return {
+    let newVar = {
         ...state,
         item: action.payload
     };
+    console.log(newVar);
+    return newVar;
 };
 
 let store = createStore(reducer);
-
+window.store2 = store;
 
 const App = ({...props}) => {
+    console.log(props);
     const onChange = (val) => {
         props.foo(val);
     };
     return (
         <div>
             <Select items={items} onChange={onChange} tabIndex="1"/>
-            <Select items={items} onChange={onChange} tabIndex="2" selected={props}/>
+            <Select items={items} onChange={onChange} tabIndex="2" selected={'item3'}/>
         </div>
     )
 };
 
 const mapStateToProps = state => {
     return {
-        selected: '',
+        selected: state.selected,
     }
 };
 
