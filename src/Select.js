@@ -105,6 +105,7 @@ const Presentation = ({...props}) => {
                                     selectedItemLabel: props.items[props.currentlyHighlighted]
                                 });
                                 focus();
+                                return false;
                             }
                         }}
                         onChange={props.inputOnChange}
@@ -215,14 +216,9 @@ export class Select extends React.Component {
 
 
     shouldComponentUpdate() {
-        console.log('should component update');
-        return true;
+        return false;
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log('fdf');
-        console.log(nextProps);
-    }
 
     render() {
         return (
