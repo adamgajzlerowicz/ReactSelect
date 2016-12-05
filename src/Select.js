@@ -185,8 +185,9 @@ const Stateless = ({items, selected = null, tabIndex = null, onChange}) => {
                     dispatch({type: actions.SET_FILTER, payload: ''});
                 }
             },
-            topBarOnClick: () => {
+            topBarOnClick: (e) => {
                 dispatch({type: actions.TOGGLE_OPEN});
+                e.preventDefault();
             },
 
             initialRenderFalse: () => {
