@@ -57,7 +57,7 @@ const Presentation = ({...props}) => {
                 }
 
             }}>
-            <a href="#"
+            <a
                tabIndex={props.tabIndex}
                onClick={props.topBarOnClick}
                onKeyPress={props.linkOnKeyPress}
@@ -187,7 +187,6 @@ const Stateless = ({items, selected = null, tabIndex = null, onChange}) => {
             },
             topBarOnClick: (e) => {
                 dispatch({type: actions.TOGGLE_OPEN});
-                e.preventDefault();
             },
 
             initialRenderFalse: () => {

@@ -34,8 +34,7 @@ const App = ({...props}) => {
     };
     return (
         <div>
-            <Select items={items} onChange={onChange} tabIndex="1"/>
-            <Select items={items} onChange={onChange} tabIndex="2" selected={'item3'}/>
+            <Select items={items} onChange={onChange} tabIndex="2" selected={props.selected}/>
         </div>
     )
 };
